@@ -7,9 +7,9 @@ param (
 Write-Output "Current Directory is '${PWD}'"
 
 if( $tfapprove  -and  $tfcmd -eq 'apply' ){
-$docker_cmd = "docker run -it --rm -v ${PWD}:/apps/ -v $env:USERPROFILE\.aws:/root/.aws -e AWS_DEFAULT_PROFILE=saml -w /apps/$env aftabalam01/terragrunt:0.19.25 $tfcmd -auto-approve"
+$docker_cmd = "docker run -it --rm -v ${PWD}:/apps/ -v $env:USERPROFILE\.aws:/root/.aws -e AWS_DEFAULT_PROFILE=aftabuw -w /apps/deploy/$env aftabalam01/terragrunt:0.19.25 $tfcmd -auto-approve"
 } Else{
-$docker_cmd = "docker run -it --rm -v ${PWD}:/apps/ -v $env:USERPROFILE\.aws:/root/.aws -e AWS_DEFAULT_PROFILE=saml -w /apps/$env aftabalam01/terragrunt:0.19.25 $tfcmd"
+$docker_cmd = "docker run -it --rm -v ${PWD}:/apps/ -v $env:USERPROFILE\.aws:/root/.aws -e AWS_DEFAULT_PROFILE=aftabuw -w /apps/deploy/$env aftabalam01/terragrunt:0.19.25 $tfcmd"
 }
 Write-Output " Starting '$docker_cmd'"
 Invoke-Expression $docker_cmd

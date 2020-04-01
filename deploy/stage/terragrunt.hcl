@@ -7,31 +7,31 @@ remote_state {
   backend = "s3"
   config ={
     encrypt = true
-    bucket = "eats-service-terraform-remote-state"
-    key = "dev/terraform.tfstate"
+    bucket = "stage-terraform-remote-state"
+    key = "stage/terraform.tfstate"
     region = "us-west-2"
-    dynamodb_table = "eats-service-terraform-lock-table"
+    dynamodb_table = "terraform-lock-table"
 
     s3_bucket_tags = {
-      Owner = "Eats"
-      Name  = "Eats_Terraform_remote_state_bucket"
+      Owner = "UWMSIM-grp4"
+      Name  = "UWMSIM-grp4_Terraform_remote_state_bucket"
       DeptCode = "460"
-      Creator = "eats@tableau.com"
+      Creator = "aftaba@uw.edu"
       Description = "Table to manage eats terrformlock"
-      Group = "eats"
-      Application = "eats_service"
-      Environment = "dev"
+      Group = "grop4"
+      Application = "machinelearning pipeline"
+      Environment = "stage"
       }
 
     dynamodb_table_tags= {
-      Owner = "Eats"
-      Name  = "eats-service-terraform-lock-table"
+      Owner = "UWMSIM-grp4"
+      Name  = "UWMSIM-grp4_Terraform_remote_state_bucket"
       DeptCode = "460"
-      Creator = "eats@tableau.com"
+      Creator = "aftaba@uw.edu"
       Description = "Table to manage eats terrformlock"
-      Group = "eats"
-      Application = "eats_service"
-      Environment = "dev"
+      Group = "grop4"
+      Application = "machinelearning pipeline"
+      Environment = "stage"
       }
     }
 }
@@ -52,7 +52,7 @@ terraform {
     # With the get_terragrunt_dir() function, you can use relative paths!
     arguments = [
       "-var-file=${get_terragrunt_dir()}/../terraform/common.tfvars",
-      "-var-file=dev.tfvars"
+      "-var-file=stage.tfvars"
     ]
   }
   # Force Terraform to keep trying to acquire a lock for
