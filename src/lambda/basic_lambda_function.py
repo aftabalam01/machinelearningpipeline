@@ -3,7 +3,7 @@
 # serverless database query - mysql RDS
 # this lambda function will take apigateway event and respond with a message
 
-__author__ = 'aalam'
+__author__ = 'harnan_group3'
 
 import logging
 import json
@@ -30,7 +30,7 @@ def response(msg, statuscode, header={},):
             "isBase64Encoded": False}
 
 
-operations = ['GET', 'POST', 'PUT']
+operations = ['GET']
 
 
 def handler(event, context):
@@ -52,15 +52,15 @@ def handler(event, context):
                 fqdn = payload.get('fqdn', None)
 
             else:
-                return response(msg=f"ERROR: Operation {operation} is not supported \n.", statuscode=400)
+                return response(msg=f"ERROR: Operation {operation} is not supported \n", statuscode=400)
 
         except Exception as e:
-                return response(msg=f"ERROR: Cannot process records .{traceback.format_exc()}\n.", statuscode=400)
+                return response(msg=f"ERROR: Cannot process records .{traceback.format_exc()}\n", statuscode=400)
 
-        return response(msg=f"fqdn sent in message is {fqdn}\n.", statuscode=200)
+        return response(msg=f"fqdn sent in message is {fqdn}\n", statuscode=200)
 
     else:
-        return response(msg=f"Input message is null\n.", statuscode=200)
+        return response(msg=f"Input message is null\n", statuscode=200)
 
 
 if __name__ == "__main__":
