@@ -11,3 +11,8 @@ variable "AWS_REGION" {
 variable "account_id" {
   type    = string
 }
+
+variable "api_environment" {
+  type= string
+  default="stage"
+}

@@ -25,11 +25,12 @@ data "aws_caller_identity" "current" {}
 #output "account_id" {
 #  value = "${data.aws_caller_identity.current.account_id}"
 #}
-module "assignment1" {
-  source              = "./Assignment1"
+module "api" {
+  source              = "./api/"
 
   AWS_REGION          = "${var.AWS_REGION}"
   account_id          = "${data.aws_caller_identity.current.account_id}"
+  api_environment     = "${var.TAG_ENVIRONMENT}"
   tags={Creator         = "${var.TAG_CREATOR}"
   Environment          = "${var.TAG_ENVIRONMENT}"
   DeptCode                 = "${var.TAG_DEPT}"

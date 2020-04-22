@@ -5,7 +5,7 @@ variable "AWS_REGION" {
 
 variable "AWS_PROFILE" {
   type    = string
-  default = "saml"
+  default = "aftabuw"
 }
 
 variable "TAG_CREATOR" {
@@ -14,7 +14,7 @@ variable "TAG_CREATOR" {
 
 variable "TAG_ENVIRONMENT" {
   type    = string
-  default = "dev"
+  default = "stage"
 }
 
 variable "TAG_DEPT" {
@@ -33,12 +33,7 @@ variable "TAG_OWNER" {
   type = string
 }
 
-variable "domain_name" {
-    type=string
-    default="ea.tableausoftware.com"
-}
-
-variable "public_dir" {
-  description = "Directory in S3 Bucket from which to serve public files (no leading or trailing slashes)"
-  default     = "public"
+variable "tags" {
+  description = "A mapping of tags to assign to all resources"
+  default     = {}
 }

@@ -52,7 +52,7 @@ terraform {
     # With the get_terragrunt_dir() function, you can use relative paths!
     arguments = [
       "-var-file=${get_terragrunt_dir()}/../terraform/common.tfvars",
-      "-var-file=dev.tfvars"
+      "-var-file=base.tfvars"
     ]
   }
   # Force Terraform to keep trying to acquire a lock for
