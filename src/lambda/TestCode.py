@@ -49,7 +49,7 @@ if __name__ == '__main__':
         # Get all the api keys,
         headers = {HEADER: billing_api_key}
 
-        response = requests.get(url=api_keys_endpoint, headers=headers, params={'includeValues':False})
+        response = requests.get(url=api_keys_endpoint, headers=headers)
         if response.reason != 'OK':
             print('FAIL')
             print(response.text)

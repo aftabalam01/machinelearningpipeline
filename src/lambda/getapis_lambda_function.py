@@ -47,10 +47,12 @@ def handler(event, context):
     if event:
         try:
             operation = event['httpMethod']
+            payload =includevalues = None
             if operation in operations:
-                payload = event['queryStringParameters'] if operation == 'GET' else json.loads(event['body'])
+                payload = event.get('queryStringParameters',None) if operation == 'GET' else json.loads(event['body'])
 
-            includevalues = payload.get('includeValues', False)
+            if payload:
+                includevalues = payload.get('includeValues', False)
             if includevalues and includevalues.lower() == 'true':
                 includevalues = True
             else:
@@ -87,7 +89,7 @@ def handler(event, context):
             return response(msg=f"{ret_response}".replace("\'", "\""), statuscode=r.status_code)
 
         except Exception as e:
-            response(msg=f"An exception occurred {traceback.format_exc()}", statuscode=500)
+            response(msg=f"An exepection occurred {traceback.format_exc()}", statuscode=500)
 
     else:
         return response(msg=f"Input message is null.\n", statuscode=200)
