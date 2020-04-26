@@ -67,13 +67,19 @@ resource "aws_iam_role_policy_attachment" "api_lambda_full_access" {
     policy_arn = "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
 }
 
+# allow access log in cloudwatch
+resource "aws_iam_role_policy_attachment" "api_cloudwatch_access" {
+    role       = "${aws_iam_role.apigateway_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
 resource "aws_api_gateway_api_key" "predict_api_key" {
   name = "predict_api_key"
   count = 2
 }
 
-resource "aws_api_gateway_api_key" "billing_api_key" {
-  name = "billing_api_key"
+resource "aws_api_gateway_api_key" "admin_api_key" {
+  name = "admin_api_key"
   count = 2
 }
 
@@ -98,7 +104,7 @@ resource "aws_api_gateway_request_validator" "request_validators" {
    resource_id   = aws_api_gateway_rest_api.dga_api_gateway.root_resource_id
    http_method   = "GET"
    authorization = "NONE"
-   api_key_required = true
+   api_key_required = false
    request_validator_id = aws_api_gateway_request_validator.request_validators.id
    request_parameters = {"method.request.header.x-api-key" = true}
  }
@@ -167,7 +173,8 @@ resource "aws_api_gateway_method" "billinginfo_get" {
    authorization = "NONE"
    api_key_required = true
    request_validator_id = aws_api_gateway_request_validator.request_validators.id
-   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.fqdn" = true}
+   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.api_id" = true,
+   "method.request.querystring.startDate" = true,"method.request.querystring.endDate" = true}
  }
 
 resource "aws_api_gateway_integration" "lambda_billinginfo" {
@@ -205,7 +212,7 @@ resource "aws_api_gateway_method" "getapis_get" {
    authorization = "NONE"
    api_key_required = true
    request_validator_id = aws_api_gateway_request_validator.request_validators.id
-   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.fqdn" = true}
+   request_parameters = {"method.request.header.x-api-key" = true }
  }
 
 resource "aws_api_gateway_integration" "lambda_getapis" {
@@ -243,7 +250,7 @@ resource "aws_api_gateway_method" "createapiskey_post" {
    authorization = "NONE"
    api_key_required = true
    request_validator_id = aws_api_gateway_request_validator.request_validators.id
-   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.fqdn" = true}
+   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.email" = true}
  }
 
 resource "aws_api_gateway_integration" "lambda_createapiskey" {
@@ -281,29 +288,45 @@ resource "aws_api_gateway_stage" "prod" {
   deployment_id = "${aws_api_gateway_deployment.api_deployment_prod.id}"
 }
 */
-resource "aws_api_gateway_deployment" "api_deployment_stage" {
+resource "aws_api_gateway_deployment" "api_deployment_stage_predict" {
    depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
    rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
-   stage_name  = "stage"
+   stage_name  = "stage_predict"
  }
 
-resource "aws_api_gateway_deployment" "api_deployment_prod" {
+resource "aws_api_gateway_deployment" "api_deployment_prod_predict" {
    depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
    rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
-   stage_name  = "prod"
+   stage_name  = "prod_predict"
+ }
+
+resource "aws_api_gateway_deployment" "api_deployment_stage_admin" {
+   depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
+   rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
+   stage_name  = "stage_admin"
+ }
+
+resource "aws_api_gateway_deployment" "api_deployment_prod_admin" {
+   depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
+   rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
+   stage_name  = "prod_admin"
  }
 
 
-### create usage plan and add it to key###
+### create stage usage plan and add it to key###
 
-resource "aws_api_gateway_usage_plan" "StageUsagePlan" {
-  name         = "stage-usage-plan"
-  description  = "stage usage description"
-  product_code = "stage_product_code"
+resource "aws_api_gateway_usage_plan" "PredictUsagePlan" {
+  name         = "predict-usage-plan"
+  description  = "predict usage description"
+  product_code = "predict_product_code"
 
   api_stages {
     api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
-    stage  = "${aws_api_gateway_deployment.api_deployment_stage.stage_name}"
+    stage  = "${aws_api_gateway_deployment.api_deployment_stage_predict.stage_name}"
+  }
+  api_stages {
+    api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
+    stage  = "${aws_api_gateway_deployment.api_deployment_prod_predict.stage_name}"
   }
 
 
@@ -321,7 +344,7 @@ resource "aws_api_gateway_usage_plan" "StageUsagePlan" {
 resource "aws_api_gateway_usage_plan_key" "stage_predict_api_plan" {
   key_id        = "${aws_api_gateway_api_key.predict_api_key[0].id}"
   key_type      = "API_KEY"
-  usage_plan_id = "${aws_api_gateway_usage_plan.StageUsagePlan.id}"
+  usage_plan_id = "${aws_api_gateway_usage_plan.PredictUsagePlan.id}"
 }
 
 resource "aws_api_gateway_usage_plan_key" "stage_billing_api_plan" {
@@ -333,9 +356,9 @@ resource "aws_api_gateway_usage_plan_key" "stage_billing_api_plan" {
 ### create usage plan and add it to key###
 
 resource "aws_api_gateway_usage_plan" "ProdUsagePlan" {
-  name         = "my-usage-plan"
-  description  = "my description"
-  product_code = "MYCODE"
+  name         = "Prod-usage-plan"
+  description  = "production usages description"
+  product_code = "My product"
 
   api_stages {
     api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
@@ -364,4 +387,30 @@ resource "aws_api_gateway_usage_plan_key" "prod_billing_api_plan" {
   key_id = "${aws_api_gateway_api_key.billing_api_key[1].id}"
   key_type = "API_KEY"
   usage_plan_id = "${aws_api_gateway_usage_plan.ProdUsagePlan.id}"
+}
+
+# enable metrics for predict calls in  stageooooo
+
+resource "aws_api_gateway_method_settings" "predict_stage" {
+  rest_api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
+  stage_name  = "${aws_api_gateway_deployment.api_deployment_stage.stage_name}"
+  method_path = "${aws_api_gateway_resource.predict_path.path_part}/${aws_api_gateway_method.predict_get.http_method}"
+
+  settings {
+    metrics_enabled = true
+    logging_level   = "INFO"
+  }
+}
+
+# enable metrics for predict calls in  prod
+
+resource "aws_api_gateway_method_settings" "predict_prod" {
+  rest_api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
+  stage_name  = "${aws_api_gateway_deployment.api_deployment_prod.stage_name}"
+  method_path = "${aws_api_gateway_resource.predict_path.path_part}/${aws_api_gateway_method.predict_get.http_method}"
+
+  settings {
+    metrics_enabled = true
+    logging_level   = "INFO"
+  }
 }

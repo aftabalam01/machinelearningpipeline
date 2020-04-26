@@ -37,7 +37,7 @@ operations = ['GET', 'POST', 'PUT']
 def handler(event, context):
     """
     Handler for APIGATEWAY request
-    :param record: api gateway msg/event
+    :param event: api gateway msg/event
     :param context: context of event
 
     :return: returns fqdn from api gateway requests
@@ -55,21 +55,20 @@ def handler(event, context):
                 else:
                     payload['dga'] = False
                 logger.info(msg=payload)
-                return response(msg=f"Info: Response {json.dumps(payload)}", statuscode=200)
+                #print(payload)
+                return response(msg=f"{json.dumps(payload)}", statuscode=200)
 
             else:
                 return response(msg=f"ERROR: Operation {operation} is not supported \n.", statuscode=400)
 
         except Exception as e:
                 return response(msg=f"ERROR: Cannot process records .{traceback.format_exc()}\n.", statuscode=400)
-
-
     else:
-        return response(msg=f"Input message is null\n.", statuscode=200)
+        return response(msg=f"Input message is null.\n", statuscode=200)
 
 
 if __name__ == "__main__":
     # dummy event to test locally
-    event = {}
+    event = {"httpMethod": "GET", "queryStringParameters": {"fqdn": "google.com"}}
     context = {"function_name": "first_lambda_function"}
     handler(event, context)

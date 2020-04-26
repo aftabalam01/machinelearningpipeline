@@ -24,9 +24,14 @@ EOF
 
 # Attach policies to lambda role
 
-resource "aws_iam_role_policy_attachment" "lambda_apigateway_full_access" {
+resource "aws_iam_role_policy_attachment" "lambda_apigateway_invoke_access" {
     role       = "${aws_iam_role.lambda_role.name}"
     policy_arn = "arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_apigateway_admin_access" {
+    role       = "${aws_iam_role.lambda_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_full_access" {
@@ -34,9 +39,27 @@ resource "aws_iam_role_policy_attachment" "lambda_full_access" {
     policy_arn = "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
 }
 
+
 data "aws_s3_bucket" "uw-imt575" {
   bucket = "imt573-g3-databucket"
 }
+
+# create lambda layer
+resource "aws_s3_bucket_object" "layer" {
+  bucket = "${data.aws_s3_bucket.uw-imt575.id}"
+  key    = "lambda/Requests_boto3.zip"
+  source = "${path.module}/Requests_boto3.zip"
+}
+
+resource "aws_lambda_layer_version" "requests_sign_boto3" {
+  layer_name = "lambda_layer_name"
+  depends_on = [aws_s3_bucket_object.layer]
+  s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
+  s3_key    = "lambda/Requests_boto3.zip"
+  source_code_hash = "${filebase64sha256("api/basic_lambda_function.zip")}"
+  compatible_runtimes = ["python3.7"]
+}
+
 
 resource "aws_s3_bucket_object" "Assignment1" {
   bucket = "${data.aws_s3_bucket.uw-imt575.id}"
@@ -47,11 +70,11 @@ resource "aws_s3_bucket_object" "Assignment1" {
 
 # create lambda function
 resource "aws_lambda_function" "lambda_assignment1" {
-    function_name = "Assingment1_lambda_function"
+  function_name = "Assingment1_lambda_function"
   handler = "basic_lambda_function.handler"
   role = "${aws_iam_role.lambda_role.arn}"
-  runtime = "python3.6"
-
+  runtime = "python3.7"
+  depends_on = [aws_s3_bucket_object.Assignment1]
   s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
   s3_key    = "Assignment1/basic_lambda_function.zip"
   source_code_hash = "${filebase64sha256("api/basic_lambda_function.zip")}"
@@ -62,10 +85,10 @@ resource "aws_lambda_function" "lambda_assignment1" {
 }
 
 
-resource "aws_s3_bucket_object" "getapikeys" {
+resource "aws_s3_bucket_object" "predict" {
   bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  key    = "lambda/getapis_lambda_function.zip"
-  source = "${path.module}/getapis_lambda_function.zip"
+  key    = "lambda/predict_lambda_function.zip"
+  source = "${path.module}/predict_lambda_function.zip"
 }
 
 
@@ -74,20 +97,21 @@ resource "aws_lambda_function" "lambda_predict" {
   function_name = "predict_lambda_function"
   handler = "predict_lambda_function.handler"
   role = "${aws_iam_role.lambda_role.arn}"
-  runtime = "python3.6"
-
+  runtime = "python3.7"
+  depends_on = [aws_s3_bucket_object.predict]
   s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
   s3_key    = "lambda/predict_lambda_function.zip"
   source_code_hash = "${filebase64sha256("api/predict_lambda_function.zip")}"
   timeout = 30
   memory_size = 128
+  layers = ["${aws_lambda_layer_version.requests_sign_boto3.arn}"]
 
   tags = "${merge(var.tags,map("Name" , "predict_lambda_function"))}"
 }
 
 resource "aws_s3_bucket_object" "billinginfo" {
   bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  key    = "labmda/billinginfo_lambda_function.zip"
+  key    = "lambda/billinginfo_lambda_function.zip"
   source = "${path.module}/billinginfo_lambda_function.zip"
 }
 
@@ -97,10 +121,11 @@ resource "aws_lambda_function" "lambda_billinginfo" {
   function_name = "billinginfo_lambda_function"
   handler = "billinginfo_lambda_function.handler"
   role = "${aws_iam_role.lambda_role.arn}"
-  runtime = "python3.6"
-
+  runtime = "python3.7"
+  depends_on = [aws_s3_bucket_object.billinginfo]
+  layers = ["${aws_lambda_layer_version.requests_sign_boto3.arn}"]
   s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  s3_key    = "labmda/billinginfo_lambda_function.zip"
+  s3_key    = "lambda/billinginfo_lambda_function.zip"
   source_code_hash = "${filebase64sha256("api/billinginfo_lambda_function.zip")}"
   timeout = 30
   memory_size = 128
@@ -110,7 +135,7 @@ resource "aws_lambda_function" "lambda_billinginfo" {
 
 resource "aws_s3_bucket_object" "getapikey" {
   bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  key    = "labmda/getapis_lambda_function.zip"
+  key    = "lambda/getapis_lambda_function.zip"
   source = "${path.module}/getapis_lambda_function.zip"
 }
 
@@ -120,10 +145,11 @@ resource "aws_lambda_function" "lambda_getapi_key" {
   function_name = "getapis_lambda_function"
   handler = "getapis_lambda_function.handler"
   role = "${aws_iam_role.lambda_role.arn}"
-  runtime = "python3.6"
-
+  runtime = "python3.7"
+  depends_on = [aws_s3_bucket_object.getapikey]
+  layers = ["${aws_lambda_layer_version.requests_sign_boto3.arn}"]
   s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  s3_key    = "labmda/getapis_lambda_function.zip"
+  s3_key    = "lambda/getapis_lambda_function.zip"
   source_code_hash = "${filebase64sha256("api/getapis_lambda_function.zip")}"
   timeout = 30
   memory_size = 128
@@ -133,7 +159,7 @@ resource "aws_lambda_function" "lambda_getapi_key" {
 
 resource "aws_s3_bucket_object" "createapikey" {
   bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  key    = "labmda/createapikey_lambda_function.zip"
+  key    = "lambda/createapikey_lambda_function.zip"
   source = "${path.module}/createapikey_lambda_function.zip"
 }
 
@@ -143,10 +169,11 @@ resource "aws_lambda_function" "lambda_createapi_key" {
   function_name = "createapikey_lambda_function"
   handler = "createapikey_lambda_function.handler"
   role = "${aws_iam_role.lambda_role.arn}"
-  runtime = "python3.6"
-
+  runtime = "python3.7"
+  depends_on = [aws_s3_bucket_object.createapikey]
+  layers = ["${aws_lambda_layer_version.requests_sign_boto3.arn}"]
   s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  s3_key    = "labmda/createapikey_lambda_function.zip"
+  s3_key    = "lambda/createapikey_lambda_function.zip"
   source_code_hash = "${filebase64sha256("api/createapikey_lambda_function.zip")}"
   timeout = 30
   memory_size = 128
