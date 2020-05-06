@@ -119,7 +119,7 @@ resource "aws_s3_bucket_object" "billinginfo" {
 # create lambda function
 resource "aws_lambda_function" "lambda_billinginfo" {
   function_name = "billinginfo_lambda_function"
-  handler = "billinginfo_lambda_function.handler"
+  handler = "billinginfo_lambda_function.handler_using_db"
   role = "${aws_iam_role.lambda_role.arn}"
   runtime = "python3.7"
   depends_on = [aws_s3_bucket_object.billinginfo]

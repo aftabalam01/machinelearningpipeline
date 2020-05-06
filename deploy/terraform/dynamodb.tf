@@ -3,38 +3,19 @@ resource "aws_dynamodb_table" "apikeys" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = "UserId"
-  range_key      = "GameTitle"
+  hash_key       = "apikeyId"
+  range_key      = "email"
 
   attribute {
-    name = "UserId"
+    name = "apikeyId"
     type = "S"
   }
 
   attribute {
-    name = "GameTitle"
+    name = "email"
     type = "S"
   }
 
-  attribute {
-    name = "TopScore"
-    type = "N"
-  }
-
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
-
-  global_secondary_index {
-    name               = "GameTitleIndex"
-    hash_key           = "GameTitle"
-    range_key          = "TopScore"
-    write_capacity     = 10
-    read_capacity      = 10
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["UserId"]
-  }
 
   tags = {
     Name        = "dynamodb-table-1"
@@ -47,37 +28,17 @@ resource "aws_dynamodb_table" "apicalllog" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = "UserId"
-  range_key      = "GameTitle"
+  hash_key       = "requestTime"
+  range_key      = "apikeyId"
 
   attribute {
-    name = "UserId"
+    name = "requestTime"
     type = "S"
   }
 
   attribute {
-    name = "GameTitle"
+    name = "apikeyId"
     type = "S"
-  }
-
-  attribute {
-    name = "TopScore"
-    type = "N"
-  }
-
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
-
-  global_secondary_index {
-    name               = "GameTitleIndex"
-    hash_key           = "GameTitle"
-    range_key          = "TopScore"
-    write_capacity     = 10
-    read_capacity      = 10
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["UserId"]
   }
 
   tags = {

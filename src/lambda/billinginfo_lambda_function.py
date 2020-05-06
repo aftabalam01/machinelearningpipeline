@@ -15,8 +15,6 @@ import calendar
 from requests_aws_sign import AWSV4Sign
 from datetime import datetime, timedelta
 
-
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -32,6 +30,7 @@ def response(msg, statuscode, header={},):
     """
     if statuscode == 200:
         logger.info(msg)
+        print(msg)
     else:
         logger.error(msg)
     return {"body": msg,  "headers": header,  "statusCode": statuscode,
@@ -55,7 +54,7 @@ def handler_using_usage_api(event, context):
             if operation in operations:
                 payload = event['queryStringParameters'] if operation == 'GET' else json.loads(event['body'])
 
-            api_id = payload.get('api_id', None)
+            api_id = payload.get('api_key', None)
             startDate = payload.get('startDate', (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"))
             endDate = payload.get('endDate', (datetime.now()).strftime("%Y-%m-%d"))
             session = boto3.session.Session()
@@ -105,7 +104,7 @@ def handler_using_db(event, context):
             if operation in operations:
                 payload = event['queryStringParameters'] if operation == 'GET' else json.loads(event['body'])
 
-            api_id = payload.get('api_id', None)
+            api_id = payload.get('api_key', None)
 
             startDate = payload.get('startDate', None)
             endDate = payload.get('endDate', None)
@@ -159,6 +158,7 @@ def handler_using_db(event, context):
                          "startDate": startDate.strftime("%Y-%m-%d"), "endDate": endDate.strftime("%Y-%m-%d")}
 
             return response(msg=f"{bill_inf0}".replace("\'", "\""), statuscode=200)
+
         except Exception as e:
             response(msg=f"An exception occurred {traceback.format_exc()}", statuscode=500)
     else:
@@ -167,6 +167,6 @@ def handler_using_db(event, context):
 if __name__ == "__main__":
     # dummy event to test locally
     event = {"httpMethod": "GET", "queryStringParameters":
-                {"api_id": "v6vdlx1755","startDate":"2020-04-01","endDate":"2020-04-30"}}
+                {"api_key": "shaq50ytsf","startDate":"2020-04-01","endDate":"2020-04-30"}}
     context = {"function_name": "first_lambda_function"}
     handler_using_db(event, context)

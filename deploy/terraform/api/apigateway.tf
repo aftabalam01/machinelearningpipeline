@@ -78,8 +78,8 @@ resource "aws_api_gateway_api_key" "predict_api_key" {
   count = 2
 }
 
-resource "aws_api_gateway_api_key" "admin_api_key" {
-  name = "admin_api_key"
+resource "aws_api_gateway_api_key" "billing_api_key" {
+  name = "billing_api_key"
   count = 2
 }
 
@@ -163,7 +163,7 @@ resource "aws_lambda_permission" "allow_api_gateway_predict" {
 resource "aws_api_gateway_resource" "billinginfo_path" {
    rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
    parent_id   = aws_api_gateway_rest_api.dga_api_gateway.root_resource_id
-   path_part   = "billinginfo"
+   path_part   = "billing"
 }
 
 resource "aws_api_gateway_method" "billinginfo_get" {
@@ -173,8 +173,7 @@ resource "aws_api_gateway_method" "billinginfo_get" {
    authorization = "NONE"
    api_key_required = true
    request_validator_id = aws_api_gateway_request_validator.request_validators.id
-   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.api_id" = true,
-   "method.request.querystring.startDate" = true,"method.request.querystring.endDate" = true}
+   request_parameters = {"method.request.header.x-api-key" = true ,"method.request.querystring.api_id" = true}
  }
 
 resource "aws_api_gateway_integration" "lambda_billinginfo" {
@@ -202,7 +201,7 @@ resource "aws_lambda_permission" "allow_api_gateway_billinginfo" {
 resource "aws_api_gateway_resource" "getapis_path" {
    rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
    parent_id   = aws_api_gateway_rest_api.dga_api_gateway.root_resource_id
-   path_part   = "getapis"
+   path_part   = "apikeys"
 }
 
 resource "aws_api_gateway_method" "getapis_get" {
@@ -288,45 +287,29 @@ resource "aws_api_gateway_stage" "prod" {
   deployment_id = "${aws_api_gateway_deployment.api_deployment_prod.id}"
 }
 */
-resource "aws_api_gateway_deployment" "api_deployment_stage_predict" {
+resource "aws_api_gateway_deployment" "api_deployment_stage" {
    depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
    rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
-   stage_name  = "stage_predict"
+   stage_name  = "stage"
  }
 
-resource "aws_api_gateway_deployment" "api_deployment_prod_predict" {
+resource "aws_api_gateway_deployment" "api_deployment_prod" {
    depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
    rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
-   stage_name  = "prod_predict"
- }
-
-resource "aws_api_gateway_deployment" "api_deployment_stage_admin" {
-   depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
-   rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
-   stage_name  = "stage_admin"
- }
-
-resource "aws_api_gateway_deployment" "api_deployment_prod_admin" {
-   depends_on = [aws_api_gateway_integration.lambda_predict, aws_api_gateway_integration.root_mock, ]
-   rest_api_id = aws_api_gateway_rest_api.dga_api_gateway.id
-   stage_name  = "prod_admin"
+   stage_name  = "prod"
  }
 
 
 ### create stage usage plan and add it to key###
 
-resource "aws_api_gateway_usage_plan" "PredictUsagePlan" {
-  name         = "predict-usage-plan"
-  description  = "predict usage description"
-  product_code = "predict_product_code"
-
+resource "aws_api_gateway_usage_plan" "StageUsagePlan" {
+  name         = "stage-usage-plan"
+  description  = "stage usage description"
+  product_code = "stage_product_code"
+  depends_on = [aws_api_gateway_deployment.api_deployment_stage]
   api_stages {
     api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
-    stage  = "${aws_api_gateway_deployment.api_deployment_stage_predict.stage_name}"
-  }
-  api_stages {
-    api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
-    stage  = "${aws_api_gateway_deployment.api_deployment_prod_predict.stage_name}"
+    stage  = "${aws_api_gateway_deployment.api_deployment_stage.stage_name}"
   }
 
 
@@ -344,7 +327,7 @@ resource "aws_api_gateway_usage_plan" "PredictUsagePlan" {
 resource "aws_api_gateway_usage_plan_key" "stage_predict_api_plan" {
   key_id        = "${aws_api_gateway_api_key.predict_api_key[0].id}"
   key_type      = "API_KEY"
-  usage_plan_id = "${aws_api_gateway_usage_plan.PredictUsagePlan.id}"
+  usage_plan_id = "${aws_api_gateway_usage_plan.StageUsagePlan.id}"
 }
 
 resource "aws_api_gateway_usage_plan_key" "stage_billing_api_plan" {
@@ -356,10 +339,10 @@ resource "aws_api_gateway_usage_plan_key" "stage_billing_api_plan" {
 ### create usage plan and add it to key###
 
 resource "aws_api_gateway_usage_plan" "ProdUsagePlan" {
-  name         = "Prod-usage-plan"
+  name         = "prod-usage-plan"
   description  = "production usages description"
   product_code = "My product"
-
+depends_on = [aws_api_gateway_deployment.api_deployment_prod]
   api_stages {
     api_id = "${aws_api_gateway_rest_api.dga_api_gateway.id}"
     stage  = "${aws_api_gateway_deployment.api_deployment_prod.stage_name}"
