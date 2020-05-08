@@ -47,16 +47,16 @@ data "aws_s3_bucket" "uw-imt575" {
 # create lambda layer
 resource "aws_s3_bucket_object" "layer" {
   bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  key    = "lambda/Requests_boto3.zip"
-  source = "${path.module}/Requests_boto3.zip"
+  key    = "lambda/lambda_layer_req_boto_tld.zip"
+  source = "${path.module}/lambda_layer/lambda_layer_req_boto_tld.zip"
 }
 
 resource "aws_lambda_layer_version" "requests_sign_boto3" {
   layer_name = "lambda_layer_name"
   depends_on = [aws_s3_bucket_object.layer]
   s3_bucket = "${data.aws_s3_bucket.uw-imt575.id}"
-  s3_key    = "lambda/Requests_boto3.zip"
-  source_code_hash = "${filebase64sha256("api/basic_lambda_function.zip")}"
+  s3_key    = "lambda/lambda_layer_req_boto_tld.zip"
+  source_code_hash = "${filebase64sha256("api/lambda_layer/lambda_layer_req_boto_tld.zip")}"
   compatible_runtimes = ["python3.7"]
 }
 

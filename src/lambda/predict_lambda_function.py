@@ -102,9 +102,9 @@ def handler(event, context):
                 # print(response)
                 pred = json.loads(res['Body'].read().decode())
                 print(pred)
-                predicted_label = 'dga' if pred > .5 else 'benign'
+                is_dga = True if pred > .5 else False
                 # call predict endpoint here
-                res_payload = {fqdn: predicted_label}
+                res_payload = {'fqdn': fqdn, 'dga': is_dga}
                 logger.info(msg=res_payload)
                 # print(payload)
                 return response(msg=f"{json.dumps(res_payload)}", statuscode=200)
