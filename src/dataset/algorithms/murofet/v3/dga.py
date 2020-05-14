@@ -3,9 +3,9 @@ from datetime import datetime
 import argparse
 
 
-def dga(date):
+def dga(date,nr=1000):
 
-    for index in range(1000):
+    for index in range(nr):
         seed = 7*[0]
         seed[0] = ((date.year & 0xFF) + 0x30) & 0xFF
         seed[1] = date.month 

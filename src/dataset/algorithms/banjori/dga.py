@@ -9,7 +9,7 @@ class Banjori:
         :param count:
         """
         self.domaincount = count
-        self.seed = 'earnestnessbiophysicalohax.com' # 15372 equal to 0 (seed = 0)
+        self.seed = ['happylifeisbetterlife.com','googlemodelmachine.com','mygardenisbetterthanyours.com'] # 15372 equal to 0 (seed = 0)
 
     def _map_to_lowercase_letter(self, s):
         return ord('a') + ((s - ord('a')) % 26)
@@ -26,10 +26,11 @@ class Banjori:
         if count:
             self.domaincount = count
         domains = []
-        domain = self.seed
-        for i in range(self.domaincount):
-            domain = self._next_domain(domain=domain)
-            domains = [*domains, domain]
+        for seed in self.seed:
+            domain = seed
+            for i in range(round(self.domaincount/3)):
+                domain = self._next_domain(domain=domain)
+                domains = [*domains, domain]
         return domains
 
 #print(banjori().generate_domain())

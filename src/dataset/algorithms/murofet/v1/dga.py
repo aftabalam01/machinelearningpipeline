@@ -42,12 +42,12 @@ def dga(date,nr=1000):
         domains = [*domains, domain]
     return domains
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--date", help="date for which to generate domains")
-    args = parser.parse_args()
-    if args.date:
-        d = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        d = datetime.now()
-    dga(d)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-d", "--date", help="date for which to generate domains")
+#     args = parser.parse_args()
+#     if args.date:
+#         d = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         d = datetime.now()
+#     dga(d)

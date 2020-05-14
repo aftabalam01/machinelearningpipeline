@@ -42,13 +42,13 @@ class Fobber:
 
 
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser(description="DGA of Fobber")
-    parser.add_argument("version", choices=[1,2], type=int)
-    args = parser.parse_args()
-    f= Fobber(version=args.version)
-    f.dga()
-    print(f.domains)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser(description="DGA of Fobber")
+#     parser.add_argument("version", choices=[1,2], type=int)
+#     args = parser.parse_args()
+#     f= Fobber(version=args.version)
+#     f.dga()
+#     print(f.domains)
 
 
 

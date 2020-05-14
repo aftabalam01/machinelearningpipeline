@@ -45,24 +45,24 @@ def dga(date, magic, number):
         domains = [*domains ,domain]
     return domains
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser(description="DGA of MyDoom")
-    parser.add_argument("-d", "--date", 
-        help="date for which to generate domains, e.g., 2019-04-09")
-
-    parser.add_argument("-m", "--magic", choices=["0xFA8"],
-            default="0xFA8", help="magic seed")
-    parser.add_argument("-n", "--number", type=int, default=100, 
-            help="number of domains to generate")
-    args = parser.parse_args()
-
-    if args.date:
-        date = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        date = datetime.now()
-
-    magic = int(args.magic, 16)
-    for domain in dga(date, magic, args.number):
-        print(domain)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser(description="DGA of MyDoom")
+#     parser.add_argument("-d", "--date",
+#         help="date for which to generate domains, e.g., 2019-04-09")
+#
+#     parser.add_argument("-m", "--magic", choices=["0xFA8"],
+#             default="0xFA8", help="magic seed")
+#     parser.add_argument("-n", "--number", type=int, default=100,
+#             help="number of domains to generate")
+#     args = parser.parse_args()
+#
+#     if args.date:
+#         date = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         date = datetime.now()
+#
+#     magic = int(args.magic, 16)
+#     for domain in dga(date, magic, args.number):
+#         print(domain)
 
     

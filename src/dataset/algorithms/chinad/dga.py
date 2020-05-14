@@ -1,21 +1,22 @@
 import string
 import hashlib
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Chinad:
     """
 
     """
-    def __init__(self,date=datetime.now()):
+    def __init__(self,date=datetime.now(),count=1000):
         self.generate_date = date
         self.domains = []
-
+        self.domaincount = count
     def _dga(self, date=None):
 
         if date:
             self.generate_date = date
+
 
         TLDS = ['.com', '.org', '.net', '.biz', '.info', '.ru', '.cn']
         alphanumeric = string.ascii_lowercase + string.digits
@@ -53,19 +54,21 @@ class Chinad:
         """
         if date:
             self.generate_date = date
-        for domain in self._dga(self.generate_date):
-            self.domains = [*self.domains, domain]
+        for c in range(round(self.domaincount/255)):
+            for domain in self._dga(self.generate_date):
+                self.domains = [*self.domains, domain]
+            self.generate_date = self.generate_date - timedelta(days=1)
         return self.domains
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="gozi dga")
-    parser.add_argument("-d", "--date", 
-            help="date for which to generate domains")
-    args = parser.parse_args()
-    if args.date:
-        d = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        d = datetime.now()
-
-    for domain in Chinad()._dga(d):
-        print(domain)
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser(description="gozi dga")
+#     parser.add_argument("-d", "--date",
+#             help="date for which to generate domains")
+#     args = parser.parse_args()
+#     if args.date:
+#         d = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         d = datetime.now()
+#
+#     for domain in Chinad()._dga(d):
+#         print(domain)

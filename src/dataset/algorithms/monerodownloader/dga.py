@@ -39,13 +39,13 @@ def generate_domains(date, back=0,nr=500):
         return domains
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--date", help="date when domains are generated")
-    args = parser.parse_args()
-    if args.date:
-        d = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        d = datetime.now()
-    for domain in generate_domains(d):
-        print(domain)
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-d", "--date", help="date when domains are generated")
+#     args = parser.parse_args()
+#     if args.date:
+#         d = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         d = datetime.now()
+#     for domain in generate_domains(d):
+#         print(domain)

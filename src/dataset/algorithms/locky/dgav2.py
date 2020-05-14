@@ -111,19 +111,19 @@ def dga(date, config_nr, domain_nr):
 
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--date", 
-            help="date for which to generate domains")
-    parser.add_argument("-c", "--config", choices=range(1,8),
-            help="config nr", type=int, default=1)
-    args = parser.parse_args()
-
-    if args.date:
-        d = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        d = datetime.now()
-
-    for i in range(8):
-        print( dga(d, args.config, i) )
-            
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-d", "--date",
+#             help="date for which to generate domains")
+#     parser.add_argument("-c", "--config", choices=range(1,8),
+#             help="config nr", type=int, default=1)
+#     args = parser.parse_args()
+#
+#     if args.date:
+#         d = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         d = datetime.now()
+#
+#     for i in range(8):
+#         print( dga(d, args.config, i) )
+#

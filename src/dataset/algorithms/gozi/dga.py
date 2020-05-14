@@ -73,17 +73,17 @@ class Gozi:
         return self.domains
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="gozi dga")
-    parser.add_argument("-d", "--date", 
-            help="date for which to generate domains")
-    parser.add_argument("-w", "--wordlist", help="wordlist", 
-            choices=seeds.keys(), default='luther')
-    args = parser.parse_args()
-    if args.date:
-        d = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        d = datetime.now()
-
-    g = Gozi(word=args.wordlist, date=d)
-    print(g.generate_domain())
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser(description="gozi dga")
+#     parser.add_argument("-d", "--date",
+#             help="date for which to generate domains")
+#     parser.add_argument("-w", "--wordlist", help="wordlist",
+#             choices=seeds.keys(), default='luther')
+#     args = parser.parse_args()
+#     if args.date:
+#         d = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         d = datetime.now()
+#
+#     g = Gozi(word=args.wordlist, date=d)
+#     print(g.generate_domain())

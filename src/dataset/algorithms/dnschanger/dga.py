@@ -35,13 +35,13 @@ class DnsChanger:
         return self.domains
 
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("seed", type=int)
-    args = parser.parse_args()
-    r = Rand()
-    r.srand(args.seed)
-
-    d = DnsCharger(seed=args.seed,count=5)
-    d.generate_domain()
-    print(d.domains)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("seed", type=int)
+#     args = parser.parse_args()
+#     r = Rand()
+#     r.srand(args.seed)
+#
+#     d = DnsChanger(seed=args.seed,count=5)
+#     d.generate_domain()
+#     print(d.domains)

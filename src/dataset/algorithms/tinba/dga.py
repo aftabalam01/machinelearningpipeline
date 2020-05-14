@@ -33,14 +33,14 @@ def generate_domains():
     # source references for each.
     dga_configurations = [
         # http://garage4hackers.com/entry.php?b=3086
-        ('oGkS3w3sGGOGG7oc', 'ssrgwnrmgrxe.com', ('com',), 1000),
+        ('oGkS3w3sGGOGG7oc', 'ssrgwnrmgrxe.com', ('com',), 10000),
         # https://johannesbader.ch/2015/04/new-top-level-domains-for-tinbas-dga
-        ('jc74FlUna852Ji9o', 'blackfreeqazyio.cc', ('com', 'net', 'in', 'ru'), 100),
+        ('jc74FlUna852Ji9o', 'blackfreeqazyio.cc', ('com', 'net', 'in', 'ru'), 10000),
         # https://www.sophos.com/en-us/threat-center/threat-analyses/viruses-and-spyware/Troj~Tinba-EL/detailed-analysis.aspx
         # https://github.com/baderj/domain_generation_algorithms/commit/c7d154a39bb172c4632f7565e0c9380e8b36c18e
-        ('yqokqFC2TPBFfJcG', 'watchthisnow.xyz', ('pw', 'us', 'xyz', 'club'), 100),
+        ('yqokqFC2TPBFfJcG', 'watchthisnow.xyz', ('pw', 'us', 'xyz', 'club'), 1000),
         # https://github.com/baderj/domain_generation_algorithms/commit/c7d154a39bb172c4632f7565e0c9380e8b36c18e
-        ('j193HsnW72Yqns7u', 'j193hsne720uie8i.cc', ('com', 'net', 'biz', 'org'), 100),
+        ('j193HsnW72Yqns7u', 'j193hsne720uie8i.cc', ('com', 'net', 'biz', 'org'), 1000),
     ]
 
 

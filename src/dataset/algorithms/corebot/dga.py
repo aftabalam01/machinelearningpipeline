@@ -28,7 +28,7 @@ class Corebot:
         for i in range(domain_len, 0, -1):
             r = ((1664525 * r) + 1013904223) & 0xFFFFFFFF
             domain += charset[r % len(charset)]
-        domain += ".ddns.net"
+        domain += ".net"
         self.domains = [*self.domains, domain]
         return r
 
@@ -40,19 +40,19 @@ class Corebot:
         return self.domains
 
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--seed", help="seed", default="1DBA8930")
-    parser.add_argument("-d", "--date", help="date for which to generate domains")
-    parser.add_argument("-t", "--debug", help="debug DGA (day set to 8)")
-    parser.add_argument("-n", "--nr", help="nr of domains to generate", 
-           type=int, default=40)
-    args = parser.parse_args()
-    
-    d = datetime.strptime(args.date, "%Y-%m-%d") if args.date else datetime.now()
-    day = 8 if args.debug else d.day
-    cb =Corebot(seed=args.seed, date=d,debug=False,count=args.nr)
-    cb.generate_domain()
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-s", "--seed", help="seed", default="1DBA8930")
+#     parser.add_argument("-d", "--date", help="date for which to generate domains")
+#     parser.add_argument("-t", "--debug", help="debug DGA (day set to 8)")
+#     parser.add_argument("-n", "--nr", help="nr of domains to generate",
+#            type=int, default=40)
+#     args = parser.parse_args()
+#
+#     d = datetime.strptime(args.date, "%Y-%m-%d") if args.date else datetime.now()
+#     day = 8 if args.debug else d.day
+#     cb =Corebot(seed=args.seed, date=d,debug=False,count=args.nr)
+#     cb.generate_domain()
 
     
     

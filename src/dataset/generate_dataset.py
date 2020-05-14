@@ -13,11 +13,13 @@ from algorithms.corebot.dga import Corebot
 from algorithms.dircrypt.dga import Dircypt
 from algorithms.dnschanger.dga import DnsChanger
 from algorithms.fobber.dga import Fobber
+from algorithms.gameoverzeus import dga as GameoverZeus
 from algorithms.gozi.dga import Gozi
 from algorithms.kraken.v1 import dga_v1 as KrakenV1
 from algorithms.kraken.v2 import dga_v2 as  KrakenV2
 from algorithms.locky import dgav2 as lockyv2
 from algorithms.locky import dgav3 as lockyv3
+from algorithms.matsnu import dga as Matsnu
 from algorithms.monerodownloader import dga as moneroD
 from algorithms.murofet.v1 import dga as murofetv1
 from algorithms.murofet.v2 import dga as murofetv2
@@ -31,6 +33,7 @@ from algorithms.pitou import dga as Pitou
 from algorithms.pizd import dga as Pizd
 from algorithms.proslikefan import dga as proslikeFan
 from algorithms.pushdo import dga as Pushdo
+from algorithms.pushdo import dga2 as Pushdo2
 from algorithms.pykspa.improved import dga as pykspa_im
 from algorithms.pykspa.precursor import dga as pykspa_pre
 from algorithms.qadars import dga as Qadars
@@ -41,6 +44,7 @@ from algorithms.ramdo.dga import Ramdo
 from algorithms.ramnit import dga as Ramnit
 from algorithms.ranbyus import dga as Ranbyus
 from algorithms.reconyc import dga as Reconyc
+from algorithms.rovnix import dga as Rovnix
 from algorithms.shiotob import dga as Shiotob
 from algorithms.simda import dga as Simda
 from algorithms.sisron import dga as Sisron
@@ -48,6 +52,7 @@ from algorithms.suppobox import dga as Suppobox
 from algorithms.symmi import dga as Symmi
 from algorithms.tempedreve import dga as TempeDreve
 from algorithms.tinba import dga as Tinba
+from algorithms.tinba import tinbadga as Tinba2
 from algorithms.unknown_malware import dga as un_malware
 # from algorithms.unnamed_downloader import dga as un_downloader
 from algorithms.unnamed_javascript_dga import dga as un_js
@@ -57,6 +62,56 @@ from algorithms.vawtrak import dga3 as VawTrak3
 from algorithms.zloader import dga as Zloader
 
 import pandas as pd
+
+SEEDS= ["16647BB4",
+            "E7392D18",
+            "C129388E",
+            "E706B455",
+            "DC485593",
+            "EF214BBF",
+            "28488EEA",
+            "4BFCBC6A",
+            "79159C10",
+            "92F4BE35",
+            "4302C04A",
+            "52278648",
+            "9753029A",
+            "A6EAB21A500",
+            "46CF1B28500",
+            "1CCEC41C",
+            "0C5787AE2",
+            "0FCFFD9E9",
+            "75EA95C2",
+            "8A0AEC7D",
+            "1DF640A8",
+            "14DF29DD",
+            "8222270B",
+            "55536A85",
+            "5C39E467",
+            "D2B3C361",
+            "F318D47D",
+            "231D9480",
+            "13317EAC",
+            "89547381",
+            "6C36D41D"]
+
+def rovnix(count=100000):
+    d = Rovnix.generate_domains(count=count)
+    df = pd.DataFrame(data=d, columns=['domainName'])
+    df['dgafaimly'] = 'rovnix'
+    write_file(df)
+
+def matsnu(count=10000):
+    d = Matsnu.generate_domains(count=count)
+    df = pd.DataFrame(data=d, columns=['domainName'])
+    df['dgafaimly'] = 'matsnu'
+    write_file(df)
+
+def gameover(count=10000):
+    d = GameoverZeus.engine(maxiter=count)
+    df = pd.DataFrame(data=d, columns=['domainName'])
+    df['dgafaimly'] = 'gameoverzeus'
+    write_file(df)
 
 def banjori(count=100):
     b = Banjori(count)
@@ -80,11 +135,13 @@ def corebot(count=None):
 
 
 
-def dircrypt(count=100,seed="0x12F"):
-    d = Dircypt(seed=seed,count=count)
-    df = pd.DataFrame(data=d.generate_domain(), columns=['domainName'])
-    df['dgafaimly'] = 'dircypt'
-    write_file(df)
+def dircrypt(count=100,seed=SEEDS):
+    count = round(count / len(seed))
+    for s in seed :
+        d = Dircypt(seed=s,count=count)
+        df = pd.DataFrame(data=d.generate_domain(), columns=['domainName'])
+        df['dgafaimly'] = 'dircypt'
+        write_file(df)
 
 
 def dnschanger(count,seed=112435):
@@ -129,18 +186,19 @@ def locky(count=500):
 
 
 def monero(date=datetime.now(),count=500):
-    domains= moneroD.generate_domains(date,count)
-    df = pd.DataFrame(data=domains, columns=['domainName'])
-    df['dgafaimly'] = 'monero'
-    write_file(df)
+    for counter in range(round(count/2500)):
+
+        domains= moneroD.generate_domains(date,count)
+        df = pd.DataFrame(data=domains, columns=['domainName'])
+        df['dgafaimly'] = 'monero'
+        write_file(df)
+        date = date - timedelta(days=1)
 
 
 def murofet(count=500):
-    domains= []
-    for i in range(round(count / 2)):
-        domain1 = murofetv1.dga(date=datetime.now(),nr=i)
-        domain2 = murofetv2.dga(date=datetime.now(),key=int("0x12F",16),nr=i)
-        domains = domains+ domain1+domain2
+    domains = murofetv1.dga(date=datetime.now(),nr=round(count / 2)) + \
+        murofetv2.dga(date=datetime.now(),key=int("0x12F",16),nr=round(count / 2))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'murofet'
     write_file(df)
@@ -184,7 +242,7 @@ def padcrypt(count=500):
 
     domains= Padcrypt.dga(date=datetime.now(),
                                     config_nr=random.choice(["2.2.86.1", "2.2.97.0"]),
-                                    count = count)
+                                    count = round(count/2))
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'padcrypt'
     write_file(df)
@@ -208,19 +266,28 @@ def pizd(count=500,date=None):
     write_file(df)
 
 def proslikefan(count=500):
-    domains=proslikeFan.dga(date=datetime.now()-timedelta(days=2), magic='mylovehatechoice',nr=count)
+    domains=proslikeFan.dga(date=datetime.now()-timedelta(days=2), magic='mylovehatechoice',nr=round(count/10)) # account from 10 tlds
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'proslikefan'
     write_file(df)
 
-def pushdo(count=None):
-    d = datetime.now()-timedelta(days=10)
-    domains= Pushdo.dga1(d, random.choice(["kz_v1", "kz_v2", "com_v1"])) + \
-             Pushdo.dga1(d, random.choice(["kz_v1", "kz_v2", "com_v1"])) + \
-             Pushdo.dga1(d, random.choice(["kz_v1", "kz_v2", "com_v1"]))
-    df = pd.DataFrame(data=domains, columns=['domainName'])
+def pushdo2(count=100000):
+    d = Pushdo2.initDGA(salt=0,count=count)
+    df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'pushdo'
     write_file(df)
+
+
+def pushdo(count=None):
+    d = datetime.now()
+    for counter in range(round(count / 2500)):
+        domains= Pushdo.dga1(d, random.choice(["kz_v1", "kz_v2", "com_v1"])) + \
+                 Pushdo.dga1(d, random.choice(["kz_v1", "kz_v2", "com_v1"])) + \
+                 Pushdo.dga1(d, random.choice(["kz_v1", "kz_v2", "com_v1"]))
+        df = pd.DataFrame(data=domains, columns=['domainName'])
+        df['dgafaimly'] = 'pushdo'
+        write_file(df)
+        d = d-timedelta(days=1)
 
 def pykspa(count=5000):
     # 20 % noise and 80 % correct
@@ -233,11 +300,14 @@ def pykspa(count=5000):
 
 def qadars(count=500):
     domains=[]
-    for seed in ["89f5", "4449", "E1F1", "E1F2", "E08A", "E1F5"]:
-        domains += Qadars.dga(datetime.now(),int(seed, 16))
-    df = pd.DataFrame(data=domains, columns=['domainName'])
-    df['dgafaimly'] = 'qadars'
-    write_file(df)
+    d = datetime.now()
+    for counter in range(round(count / 2500)):
+        for seed in ["89f5", "4449", "E1F1", "E1F2", "E08A", "E1F5"]:
+            domains += Qadars.dga(d,int(seed, 16))
+            df = pd.DataFrame(data=domains, columns=['domainName'])
+            df['dgafaimly'] = 'qadars'
+        write_file(df)
+        d = d - timedelta(days=1)
 
 def qakbot(count=5000):
     d, tlds, nr, sandbox, seed = Qakbot.set_arg()
@@ -247,10 +317,13 @@ def qakbot(count=5000):
     write_file(df)
 
 def qsnatch(count=None):
-    domains= qsnatchA.dga(date=datetime.now()-timedelta(days=20))+qsnatchB.dga(date=datetime.now()-timedelta(days=10))
-    df = pd.DataFrame(data=domains, columns=['domainName'])
-    df['dgafaimly'] = 'qsnatch'
-    write_file(df)
+    d = datetime.now()
+    for counter in range(round(count / 2500)):
+        domains= qsnatchA.dga(date=d)+qsnatchB.dga(date=datetime.now()-timedelta(days=10))
+        df = pd.DataFrame(data=domains, columns=['domainName'])
+        df['dgafaimly'] = 'qsnatch'
+        write_file(df)
+        d = d - timedelta(days=1)
 
 def ramdo(count=5000):
     domains= Ramdo(count=count).generate_dga()
@@ -270,12 +343,14 @@ def ramnit(count=1000):
 def ranbyus(count=None):
     seeds = random.sample(SEEDS, 10)
     domains = []
-    for seed in seeds:
-        d = datetime.now() - timedelta(days=random.random())
-        domains += Ranbyus.dga(d.year, d.month, d.day, seed=int(seed, 16))
-    df = pd.DataFrame(data=domains, columns=['domainName'])
-    df['dgafaimly'] = 'ranbyus'
-    write_file(df)
+    d = datetime.now()
+    for counter in range(round(count / 2500)):
+        for seed in seeds:
+            domains += Ranbyus.dga(d.year, d.month, d.day, seed=int(seed, 16))
+        df = pd.DataFrame(data=domains, columns=['domainName'])
+        df['dgafaimly'] = 'ranbyus'
+        write_file(df)
+        d = d - timedelta(days=1)
 
 def reconyc(count=5000):
     domains= Reconyc.generate_domains(nr=count)
@@ -296,10 +371,13 @@ def simda(count=5000):
     write_file(df)
 
 def sisron(count=5000):
-    domains= Sisron.generate_domains(datetime.now()-timedelta(days=10), count)
-    df = pd.DataFrame(data=domains, columns=['domainName'])
-    df['dgafaimly'] = 'sisron'
-    write_file(df)
+    d = datetime.now()
+    for counter in range(round(count / 40)):
+        domains= Sisron.generate_domains(d, 100)
+        df = pd.DataFrame(data=domains, columns=['domainName'])
+        df['dgafaimly'] = 'sisron'
+        write_file(df)
+        d = d - timedelta(days=1)
 
 def suppobox(count=5000):
     domains =[]
@@ -318,10 +396,13 @@ def symmi(count=5000):
     write_file(df)
 
 def tempedreve(count=None):
-    domains= TempeDreve.dga(datetime.now())
-    df = pd.DataFrame(data=domains, columns=['domainName'])
-    df['dgafaimly'] = 'tempedreve'
-    write_file(df)
+    d = datetime.now()
+    for counter in range(round(count / 1800)):
+        domains= TempeDreve.dga(d)
+        df = pd.DataFrame(data=domains, columns=['domainName'])
+        df['dgafaimly'] = 'tempedreve'
+        write_file(df)
+        d = d - timedelta(days=1)
 
 def tinba(count=None):
     domains= Tinba.generate_domains()
@@ -329,16 +410,22 @@ def tinba(count=None):
     df['dgafaimly'] = 'tinba'
     write_file(df)
 
+def tinba2(count=100000):
+    domains= Tinba2.tinbaDGA(idomain='worldisgreat.com',count=count)
+    df = pd.DataFrame(data=domains, columns=['domainName'])
+    df['dgafaimly'] = 'tinba'
+    write_file(df)
+
 def unmalware(count=1000):
     domains=[]
     for p in ["sn", "al"]:
-        domains=domains+un_malware.dga(p,round(count/2))
+        domains=domains+un_malware.dga(p,round(count/12))
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'unmalware'
     write_file(df)
 
 def unjs(count=1000):
-    domains= un_js.dga(seed="hello", d=datetime.now(),nr=count)
+    domains= un_js.dga(seed="hello", d=datetime.now(),nr=round(count/3))
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'unjavascript'
     write_file(df)
@@ -365,84 +452,13 @@ def vawtrak(count=100):
 def write_file(df):
     df.to_csv(DATA_FILE, compression="gzip", mode='a', header=False,index=False)
 
-SEEDS= ["16647BB4",
-            "E7392D18",
-            "C129388E",
-            "E706B455",
-            "DC485593",
-            "EF214BBF",
-            "28488EEA",
-            "4BFCBC6A",
-            "79159C10",
-            "92F4BE35",
-            "4302C04A",
-            "52278648",
-            "9753029A",
-            "A6EAB21A500",
-            "46CF1B28500",
-            "1CCEC41C",
-            "0C5787AE2",
-            "0FCFFD9E9",
-            "75EA95C2",
-            "8A0AEC7D",
-            "1DF640A8",
-            "14DF29DD",
-            "8222270B",
-            "55536A85",
-            "5C39E467",
-            "D2B3C361",
-            "F318D47D",
-            "231D9480",
-            "13317EAC",
-            "89547381",
-            "6C36D41D"]
-
 
 def generate_data(config_file=None):
 
     if not config_file:
         config ={
-                'banjori': 421,
-'chinad': 540,
-'corebot': 366,
-'dircrypt': 415,
-'dnschanger': 304,
-'fobber': 456,
-'gozi': 476,
-'kraken': 385,
-'locky': 372,
-'monero': 479,
-'murofet': 310,
-'mydoom': 392,
-'necurs': 340,
-'newgoz': 317,
-'nymaim': 536,
-'padcrypt': 369,
-'pitou': 378,
-'pizd': 512,
-'proslikefan': 451,
-'pushdo': 528,
-'pykspa': 500,
-'qadars': 505,
-'qakbot': 536,
-'qsnatch': 449,
-'ramdo': 451,
-'ramnit': 418,
-'ranbyus': 339,
-'reconyc': 374,
-'shiotob': 500,
-'simda': 415,
-'sisron': 462,
-'suppobox': 360,
-'symmi': 475,
-'tempedreve': 497,
-'tinba': 365,
-'un_malware': 545,
-'un_downloader': 302,
-'un_js': 470,
-'vawtrak': 383,
-'zloader': 532,
-        }
+                'gameover' : 30,
+                            }
     else:
         with open(config_file) as json_file:
             config = json.load(json_file)
@@ -453,9 +469,11 @@ def generate_data(config_file=None):
         'dircrypt': dircrypt,
         'dnschanger': dnschanger,
         'fobber': fobber,
+        'gameover': gameover,
         'gozi': gozi,
         'kraken': kraken,
         'locky': locky,
+        'matsnu': matsnu,
         'monero': monero,
         'murofet': murofet,
         'mydoom': mydoom,
@@ -467,6 +485,7 @@ def generate_data(config_file=None):
         'pizd': pizd,
         'proslikefan': proslikefan,
         'pushdo': pushdo,
+        'pushdo2': pushdo2,
         'pykspa': pykspa,
         'qadars': qadars,
         'qakbot': qakbot,
@@ -475,6 +494,7 @@ def generate_data(config_file=None):
         'ramnit': ramnit,
         'ranbyus': ranbyus,
         'reconyc': reconyc,
+        'rovnix': rovnix,
         'shiotob': shiotob,
         'simda': simda,
         'sisron': sisron,
@@ -482,11 +502,13 @@ def generate_data(config_file=None):
         'symmi': symmi,
         'tempedreve': tempedreve,
         'tinba': tinba,
+        'tinba2': tinba2,
         'un_malware': unmalware,
         'un_js': unjs,
         'vawtrak': vawtrak,
         'zloader': zloader
         }
+
     def execute(key,count=10):
         print(f"running function {key} for count {count}")
         func=function_map[key]
@@ -506,7 +528,7 @@ if __name__ == "__main__":
         os.remove(DATA_FILE)
     except OSError:
         pass
-    generate_data(DATA_CONFIG)
+    generate_data()
 
 
 

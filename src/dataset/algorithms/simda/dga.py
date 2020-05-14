@@ -29,4 +29,4 @@ def generate_domains(count=1000):
         domains = [*domains,domain]
     return domains
 
-print(generate_domains())
+#print(generate_domains())

@@ -51,17 +51,17 @@ def get_domains(nr, seed, tld_set,date=datetime.now()):
             domains.append(dga(i*2, date, seed, temp_file, tld_set))
     return domains
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--date", 
-            help="date for which to generate domains")
-    parser.add_argument("-t", "--tld", choices=[1,2], type=int,
-            help="tld set", default=1)
-    parser.add_argument('-s', '--seed', choices=['a','b'], default='a')
-    args = parser.parse_args()
-    if args.date:
-        d = datetime.strptime(args.date, "%Y-%m-%d")
-    else:
-        d = datetime.now()
-    for domain in get_domains(1000, d, args.seed, args.tld):
-        print(domain)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-d", "--date",
+#             help="date for which to generate domains")
+#     parser.add_argument("-t", "--tld", choices=[1,2], type=int,
+#             help="tld set", default=1)
+#     parser.add_argument('-s', '--seed', choices=['a','b'], default='a')
+#     args = parser.parse_args()
+#     if args.date:
+#         d = datetime.strptime(args.date, "%Y-%m-%d")
+#     else:
+#         d = datetime.now()
+#     for domain in get_domains(1000, d, args.seed, args.tld):
+#         print(domain)

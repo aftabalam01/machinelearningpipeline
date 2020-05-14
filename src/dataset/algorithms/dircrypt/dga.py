@@ -35,9 +35,9 @@ class Dircypt:
         return self.domains
 
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser(description="generate Dircrypt domains")
-    parser.add_argument("seed", help="seed as hex")
-    args = parser.parse_args()
-    domains= Dircypt().generate_domain()
-    print(domains)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser(description="generate Dircrypt domains")
+#     parser.add_argument("seed", help="seed as hex")
+#     args = parser.parse_args()
+#     domains= Dircypt().generate_domain()
+#     print(domains)

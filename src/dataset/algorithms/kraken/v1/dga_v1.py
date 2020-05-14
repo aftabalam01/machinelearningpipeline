@@ -46,9 +46,9 @@ def get_domains(nr, seed_set):
             domains.append(dga(i*2, seed_set, temp_file))
     return domains
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--seed', choices=['a','b'], default='a')
-    args = parser.parse_args()
-    for domain in get_domains(1000, args.seed):
-        print(domain)
+# if __name__=="__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument('-s', '--seed', choices=['a','b'], default='a')
+#     args = parser.parse_args()
+#     for domain in get_domains(1000, args.seed):
+#         print(domain)
