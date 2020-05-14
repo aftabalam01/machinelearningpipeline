@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 
+
 def summary(df):
     print(f" Before: Number of record {df.shape[0]} and number of columns {df.shape[1]}")
     df.drop_duplicates(keep="first", inplace=True)
@@ -14,7 +15,7 @@ def summary(df):
 
 if __name__=='__main__':
     INPUT_FILE= "{}/processingdata.csv.gz".format(os.getenv('datadir',"."))
-    OUTPUT_FILE = "{}/output/output.csv.gz".format(os.getenv('datadir', "."))
+    OUTPUT_FILE = "{}/output/output.csv.gz".format(os.getenv('outputdir', "."))
     try:
         os.remove(OUTPUT_FILE)
     except OSError:

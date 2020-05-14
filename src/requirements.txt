@@ -1,5 +1,0 @@
-numpy
-pandas
-joblib
-requests
-boto3

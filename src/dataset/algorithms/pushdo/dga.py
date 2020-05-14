@@ -122,6 +122,7 @@ def set_arg():
     else:
         d = datetime.now()
     return d, args.config
+
 if __name__ == "__main__":
     d, config = set_arg()
     print(dga1(d, config))

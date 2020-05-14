@@ -34,11 +34,9 @@ class Gozi:
             self.wordlist=seeds.keys()
         else:
            self.wordlist =[word]
-        self.date= datetime.strptime(args.date, "%Y-%m-%d") if date else datetime.now()
+        self.date= datetime.strptime(date, "%Y-%m-%d") if date else datetime.now()
         self.domains=[]
         self.domaincount = count if count else 100
-        print(f"words {self.wordlist}\n"
-              f"count {self.domaincount}")
 
     def dga(self, wordlist,date=None):
         words = get_words(wordlist)

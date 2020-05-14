@@ -4,7 +4,7 @@ This module has class and methods needed for create DGA and benign domain data s
 import random
 import os
 import json
-
+import pandas as pd
 from joblib import Parallel, delayed
 from datetime import datetime,timedelta
 from algorithms.banjori.dga import Banjori
@@ -61,7 +61,7 @@ from algorithms.vawtrak import dga2 as VawTrak2
 from algorithms.vawtrak import dga3 as VawTrak3
 from algorithms.zloader import dga as Zloader
 
-import pandas as pd
+
 
 SEEDS= ["16647BB4",
             "E7392D18",
@@ -95,11 +95,13 @@ SEEDS= ["16647BB4",
             "89547381",
             "6C36D41D"]
 
+
 def rovnix(count=100000):
     d = Rovnix.generate_domains(count=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'rovnix'
     write_file(df)
+
 
 def matsnu(count=10000):
     d = Matsnu.generate_domains(count=count)
@@ -107,11 +109,13 @@ def matsnu(count=10000):
     df['dgafaimly'] = 'matsnu'
     write_file(df)
 
+
 def gameover(count=10000):
     d = GameoverZeus.engine(maxiter=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'gameoverzeus'
     write_file(df)
+
 
 def banjori(count=100):
     b = Banjori(count)
@@ -121,7 +125,7 @@ def banjori(count=100):
 
 
 def chinad(count=100):
-    df=pd.DataFrame(data=Chinad().generate_domain(),columns=['domainName'])
+    df=pd.DataFrame(data=Chinad().generate_domain(count=count),columns=['domainName'])
     df['dgafaimly'] = 'chinad'
     write_file(df)
 
@@ -132,7 +136,6 @@ def corebot(count=None):
     df = pd.DataFrame(data=c.domains, columns=['domainName'])
     df['dgafaimly'] = 'corebot'
     write_file(df)
-
 
 
 def dircrypt(count=100,seed=SEEDS):
@@ -158,11 +161,13 @@ def fobber(version=2,count=500):
     df['dgafaimly'] = 'fobber'
     write_file(df)
 
+
 def gozi(count=500):
     g = Gozi(count=count)
     df = pd.DataFrame(data=g.generate_domain(), columns=['domainName'])
     df['dgafaimly'] = 'gozi'
     write_file(df)
+
 
 def kraken(count=100):
     domains = KrakenV1.get_domains(nr=round(count/4), seed_set='a') + \
@@ -210,6 +215,7 @@ def mydoom(count=500):
     df['dgafaimly'] = 'mydoom'
     write_file(df)
 
+
 def necurs(count=500):
     domains= []
     for i in range(round(count / 2)):
@@ -247,6 +253,7 @@ def padcrypt(count=500):
     df['dgafaimly'] = 'padcrypt'
     write_file(df)
 
+
 def pitou(count=500):
     d=datetime.now()
     seed= Pitou.date2seed(d)
@@ -257,6 +264,7 @@ def pitou(count=500):
     df['dgafaimly'] = 'pitou'
     write_file(df)
 
+
 def pizd(count=500,date=None):
     d = datetime.strptime(date, "%Y-%m-%d") if date else datetime.now()
     d -= datetime.utcfromtimestamp(0)
@@ -265,11 +273,13 @@ def pizd(count=500,date=None):
     df['dgafaimly'] = 'pizd'
     write_file(df)
 
+
 def proslikefan(count=500):
     domains=proslikeFan.dga(date=datetime.now()-timedelta(days=2), magic='mylovehatechoice',nr=round(count/10)) # account from 10 tlds
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'proslikefan'
     write_file(df)
+
 
 def pushdo2(count=100000):
     d = Pushdo2.initDGA(salt=0,count=count)
@@ -288,6 +298,7 @@ def pushdo(count=None):
         df['dgafaimly'] = 'pushdo'
         write_file(df)
         d = d-timedelta(days=1)
+
 
 def pykspa(count=5000):
     # 20 % noise and 80 % correct
@@ -309,12 +320,14 @@ def qadars(count=500):
         write_file(df)
         d = d - timedelta(days=1)
 
+
 def qakbot(count=5000):
     d, tlds, nr, sandbox, seed = Qakbot.set_arg()
     domains= Qakbot.dga(d, tlds, count, sandbox, seed)
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'qakbot'
     write_file(df)
+
 
 def qsnatch(count=None):
     d = datetime.now()
@@ -325,11 +338,13 @@ def qsnatch(count=None):
         write_file(df)
         d = d - timedelta(days=1)
 
+
 def ramdo(count=5000):
     domains= Ramdo(count=count).generate_dga()
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'ramdo'
     write_file(df)
+
 
 def ramnit(count=1000):
     seeds = random.sample(SEEDS, 10)
@@ -339,6 +354,7 @@ def ramnit(count=1000):
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'ramnit'
     write_file(df)
+
 
 def ranbyus(count=None):
     seeds = random.sample(SEEDS, 10)
@@ -352,11 +368,13 @@ def ranbyus(count=None):
         write_file(df)
         d = d - timedelta(days=1)
 
+
 def reconyc(count=5000):
     domains= Reconyc.generate_domains(nr=count)
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'reconyc'
     write_file(df)
+
 
 def shiotob(count=5000):
     domains= Shiotob.generate_domains(count)
@@ -364,11 +382,13 @@ def shiotob(count=5000):
     df['dgafaimly'] = 'shiotob'
     write_file(df)
 
+
 def simda(count=5000):
     domains= Simda.generate_domains(count=count)
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'simda'
     write_file(df)
+
 
 def sisron(count=5000):
     d = datetime.now()
@@ -378,6 +398,7 @@ def sisron(count=5000):
         df['dgafaimly'] = 'sisron'
         write_file(df)
         d = d - timedelta(days=1)
+
 
 def suppobox(count=5000):
     domains =[]
@@ -395,14 +416,17 @@ def symmi(count=5000):
     df['dgafaimly'] = 'symmi'
     write_file(df)
 
+
 def tempedreve(count=None):
     d = datetime.now()
     for counter in range(round(count / 1800)):
+        d = datetime.now() - timedelta(days=round(count / 1800))
         domains= TempeDreve.dga(d)
         df = pd.DataFrame(data=domains, columns=['domainName'])
         df['dgafaimly'] = 'tempedreve'
         write_file(df)
         d = d - timedelta(days=1)
+
 
 def tinba(count=None):
     domains= Tinba.generate_domains()
@@ -410,11 +434,13 @@ def tinba(count=None):
     df['dgafaimly'] = 'tinba'
     write_file(df)
 
+
 def tinba2(count=100000):
     domains= Tinba2.tinbaDGA(idomain='worldisgreat.com',count=count)
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'tinba'
     write_file(df)
+
 
 def unmalware(count=1000):
     domains=[]
@@ -424,11 +450,13 @@ def unmalware(count=1000):
     df['dgafaimly'] = 'unmalware'
     write_file(df)
 
+
 def unjs(count=1000):
     domains= un_js.dga(seed="hello", d=datetime.now(),nr=round(count/3))
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'unjavascript'
     write_file(df)
+
 
 def zloader(count=1000):
     domains=[]
@@ -440,8 +468,9 @@ def zloader(count=1000):
     df['dgafaimly'] = 'zloader'
     write_file(df)
 
+
 def vawtrak(count=100):
-    domains= VawTrak1.generate_domains(count=round(count/10)) + \
+    domains = VawTrak1.generate_domains(count=round(count/10)) + \
             VawTrak2.generate_domains(count=round(count/10)) +\
             VawTrak3.generate_domains(count=round(count/10))
     df = pd.DataFrame(data=domains, columns=['domainName'])
@@ -456,8 +485,52 @@ def write_file(df):
 def generate_data(config_file=None):
 
     if not config_file:
-        config ={
+        config = {
                 'gameover' : 30,
+            "banjori": 204,
+            "chinad": 96,
+            "corebot": 204,
+            "dircrypt": 195,
+            "dnschanger": 197,
+            "fobber": 64,
+            "gozi": 193,
+            "kraken": 199,
+            "locky": 78,
+            "matsnu":10,
+            "monero": 206,
+            "murofet": 110,
+            "mydoom": 146,
+            "necurs": 118,
+            "newgoz": 177,
+            "nymaim": 139,
+            "padcrypt": 135,
+            "pitou": 77,
+            "pizd": 200,
+            "proslikefan": 116,
+            "pushdo": 90,
+            "pushdo2": 90,
+            "pykspa": 159,
+            "qadars": 31,
+            "qakbot": 162,
+            "qsnatch": 198,
+            "ramdo": 101,
+            "ramnit": 184,
+            "ranbyus": 157,
+            "reconyc": 34,
+            "rovnix": 34,
+            "shiotob": 48,
+            "simda": 203,
+            "sisron": 54,
+            "suppobox": 210,
+            "symmi": 182,
+            "tempedreve": 34,
+            "tinba": 186,
+            "tinba2": 186,
+            "un_malware": 45,
+            "un_downloader": 47,
+            "un_js": 80,
+            "vawtrak": 118,
+            "zloader": 118,
                             }
     else:
         with open(config_file) as json_file:
@@ -509,17 +582,16 @@ def generate_data(config_file=None):
         'zloader': zloader
         }
 
-    def execute(key,count=10):
-        print(f"running function {key} for count {count}")
-        func=function_map[key]
+    def execute(key, count=10):
+        print(f"{datetime.now()}: Running function {key} for count {count}")
+        func = function_map[key]
         func(count=count)
-        print(f"running function {key} for count {count} complete")
+        print(f"{datetime.now()}:Running function {key} for count {count} complete")
 
-    Parallel(n_jobs=4)(delayed(execute)(key=key,count=config[key]) for key in config.keys())
+    Parallel(n_jobs=4)(delayed(execute)(key=key, count=config[key]) for key in config.keys())
 
 
 if __name__ == "__main__":
-    import sys
     DATA_FILE = "{}/processingdata.csv.gz".format(os.getenv('datadir',"."))
     DATA_CONFIG = "{}/config.json".format(os.getenv('configdir',"config"))
     try:
@@ -528,7 +600,7 @@ if __name__ == "__main__":
         os.remove(DATA_FILE)
     except OSError:
         pass
-    generate_data()
+    generate_data(DATA_CONFIG)
 
 
 

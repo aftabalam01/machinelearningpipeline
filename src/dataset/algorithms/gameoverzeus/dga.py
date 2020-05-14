@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime, timedelta
 import time
 import hashlib
 import socket
@@ -17,13 +17,11 @@ def hasher(data, algorithm="md5"):
     return h.hexdigest()
 
 
-def getDate():
-    dt = str(datetime.datetime.now()).split(' ')[0]
-    dstash = dt.split('-')
-    dd = dstash[2]
-    mm = dstash[1]
-    yyyy = dstash[0]
-    return int(dd), int(mm), int(yyyy)
+def getDate(daysago=0):
+    if daysago > 1000:
+        daysago = int(daysago/1000)
+    d = datetime.datetime.now() -timedelta(days=daysago)
+    return d.day, d.month, d.month
 
 
 def seeder(index, salt):
@@ -34,7 +32,7 @@ def seeder(index, salt):
     edx = eax % ecx
     eax = eax / ecx
     logging.info ("eax : %s edx : %s salt : %s" % (eax, edx, salt))
-    day, month, year = getDate()
+    day, month, year = getDate(index)
     h = hashlib.new("md5")
     dx = ("%08x" % socket.htonl(edx)).encode()
     logging.info("\tedx : " + dx.hex())

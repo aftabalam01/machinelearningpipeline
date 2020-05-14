@@ -48,16 +48,16 @@ def tinbaDGA(idomain, seed,count=100000):
     return domains
 
 
-def init():
-    harddomain = "worldisgreat.com"
-    seed = "oGkS3w3sGGOGG7oc"
-    domains = tinbaDGA(harddomain, seed)
-    index = 0
-    fp = open("../tinba.txt", "w")
-    for domain in domains:
-        index += 1
-        fp.write(domain + '\n')
-    fp.close()
+# def init():
+#     harddomain = "worldisgreat.com"
+#     seed = "oGkS3w3sGGOGG7oc"
+#     domains = tinbaDGA(harddomain, seed)
+#     index = 0
+#     fp = open("../tinba.txt", "w")
+#     for domain in domains:
+#         index += 1
+#         fp.write(domain + '\n')
+#     fp.close()
 
 
-init()
+#init()

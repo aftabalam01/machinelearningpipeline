@@ -16,8 +16,6 @@ special = "31b4bd31fg1x2"
 
 def generate_domains(date, back=0,nr=500):
 
-    print(date)
-    print(type(date))
     ndays = (date - datetime(1970, 1, 1)).days
     # days_since_epoch
     domains=[]

@@ -20,7 +20,7 @@ def dga(r):
     for i in range(length):
         domain += chr(r.rand() % 26 + ord('a'))
     domain += ".top"
-    print(domain)
+    #print(domain)
 
 
 def generate_domains(count=96):
