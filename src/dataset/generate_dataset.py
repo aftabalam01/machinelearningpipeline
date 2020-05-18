@@ -125,7 +125,7 @@ def banjori(count=100):
 
 
 def chinad(count=100):
-    df=pd.DataFrame(data=Chinad().generate_domain(count=count),columns=['domainName'])
+    df=pd.DataFrame(data=Chinad(count=count).generate_domain(),columns=['domainName'])
     df['dgafaimly'] = 'chinad'
     write_file(df)
 

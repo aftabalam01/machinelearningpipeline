@@ -20,7 +20,7 @@ def hasher(data, algorithm="md5"):
 def getDate(daysago=0):
     if daysago > 1000:
         daysago = int(daysago/1000)
-    d = datetime.datetime.now() -timedelta(days=daysago)
+    d = datetime.now() -timedelta(days=daysago)
     return d.day, d.month, d.month
 
 
