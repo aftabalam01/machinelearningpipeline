@@ -28,19 +28,19 @@ def dga(seed, domain, tlds, num_domains):
             yield domain
 
 
-def generate_domains():
+def generate_domains(count=10000):
     # There are several Tinba variants.  This describes those variations and
     # source references for each.
     dga_configurations = [
         # http://garage4hackers.com/entry.php?b=3086
-        ('oGkS3w3sGGOGG7oc', 'ssrgwnrmgrxe.com', ('com',), 10000),
+        ('oGkS3w3sGGOGG7oc', 'ssrgwnrmgrxe.com', ('com',), count),
         # https://johannesbader.ch/2015/04/new-top-level-domains-for-tinbas-dga
-        ('jc74FlUna852Ji9o', 'blackfreeqazyio.cc', ('com', 'net', 'in', 'ru'), 10000),
+        ('jc74FlUna852Ji9o', 'blackfreeqazyio.cc', ('com', 'net', 'in', 'ru'), count),
         # https://www.sophos.com/en-us/threat-center/threat-analyses/viruses-and-spyware/Troj~Tinba-EL/detailed-analysis.aspx
         # https://github.com/baderj/domain_generation_algorithms/commit/c7d154a39bb172c4632f7565e0c9380e8b36c18e
-        ('yqokqFC2TPBFfJcG', 'watchthisnow.xyz', ('pw', 'us', 'xyz', 'club'), 1000),
+        ('yqokqFC2TPBFfJcG', 'watchthisnow.xyz', ('pw', 'us', 'xyz', 'club'), count),
         # https://github.com/baderj/domain_generation_algorithms/commit/c7d154a39bb172c4632f7565e0c9380e8b36c18e
-        ('j193HsnW72Yqns7u', 'j193hsne720uie8i.cc', ('com', 'net', 'biz', 'org'), 1000),
+        ('j193HsnW72Yqns7u', 'j193hsne720uie8i.cc', ('com', 'net', 'biz', 'org'), count),
     ]
 
 
@@ -58,10 +58,10 @@ def generate_domains():
         ('santaluable.com', 'santanyr.com', 'ervaluable.com', 'larnasa.com'))
 
 
-    for domain in hard_coded:
-        print(domain)
+    # for domain in hard_coded:
+    #     print(domain)
     domains =[]
     for config in dga_configurations:
         for result in dga(*config):
             domains=[*domains,result]
-    return domains
+    return list(set(domains))

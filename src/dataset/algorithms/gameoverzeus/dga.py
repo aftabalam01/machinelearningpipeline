@@ -140,7 +140,7 @@ def engine(salt=0x35190501, maxiter=100000):
             domain += ".\x6F\x72\x67"
 
         domains.append(domain)
-    return domains
+    return list(set(domains))
 
 
 # index = 0

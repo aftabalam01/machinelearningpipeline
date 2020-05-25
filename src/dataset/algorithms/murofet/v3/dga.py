@@ -4,7 +4,7 @@ import argparse
 
 
 def dga(date,nr=1000):
-
+    domains=[]
     for index in range(nr):
         seed = 7*[0]
         seed[0] = ((date.year & 0xFF) + 0x30) & 0xFF
@@ -46,7 +46,9 @@ def dga(date,nr=1000):
             if not index % m: 
                 domain += tld
                 break
-        print(domain)
+        #print(domain)
+        domains = [*domains,domain]
+    return list(set(domains))
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
@@ -56,4 +58,4 @@ if __name__=="__main__":
         d = datetime.strptime(args.date, "%Y-%m-%d")
     else:
         d = datetime.now()
-    dga(d)
+    print(dga(d))

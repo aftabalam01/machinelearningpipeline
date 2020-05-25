@@ -22,6 +22,7 @@ def generate_domains(time_, word_list,nr=100):
     if not time_:
         time_ = time.time()
     seed = int(time_) >> 9
+    domains=[]
     for c in range(nr):
         nr = seed
         res = 16*[0]
@@ -44,20 +45,25 @@ def generate_domains(time_, word_list,nr=100):
         first_word = words[first_word_index]
         second_word = words[second_word_index]
         tld = ".net"
-        print("{}{}{}".format(first_word, second_word, tld))
+        domain= f"{first_word}{second_word}{tld}"
         seed += 1
+        domains = [*domains,domain]
+    return list(set(domains))
+
 
 def set_arg():
+    import random
     parser = argparse.ArgumentParser()
     datefmt = "%Y-%m-%d %H:%M:%S"
-    parser.add_argument('set', choices=[1, 2, 3], type=int, help="word list")
+    parser.add_argument('set', choices=[1, 2, 3], type=int, help="word list", default=random.choice([1, 2, 3]))
     parser.add_argument('-t', '--time',
                         help="time (default is now: %(default)s)",
                         default=datetime.now().strftime(datefmt))
     args = parser.parse_args()
     time_ = time.mktime(datetime.strptime(args.time, datefmt).timetuple())
 
-    return time_,args.set
+    return time_, args.set
+
 
 if __name__=="__main__":
     generate_domains(set_arg(),1000)

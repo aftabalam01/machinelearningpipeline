@@ -37,7 +37,7 @@ class Corebot:
         charset, r = self.init_rand_and_chars(self.date.year, self.date.month, self.date.day, 1, int(self.seed, 16))
         for _ in range(self.domaincount):
             r = self._generate_domain(charset, r)
-        return self.domains
+        return list(set(self.domains))
 
 
 # if __name__=="__main__":

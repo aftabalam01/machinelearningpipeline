@@ -137,7 +137,6 @@ def initDGA(salt=0,count=100000):
     seed = generateString(salt, seed)  # .decode("hex")
     for i in range(count):
         hashit = hasher(seed)
-        print(hashit)
         domain = generateDomain(hashit, 0x0A)
         seed = ("%08x" % (int(hashit[:8], 16) + 0x01000000))
         domains.append(domain)

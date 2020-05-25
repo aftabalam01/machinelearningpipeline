@@ -219,6 +219,6 @@ def generate_domain():
 
 def generate_domains(count=100000):
     domains = []
-    for _ in list(range(0, 100000)):
+    for _ in list(range(0, count)):
         domains = [*domains, generate_domain()]
-    return domains
+    return list(set(domains))

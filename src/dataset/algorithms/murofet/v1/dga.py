@@ -40,7 +40,7 @@ def dga(date,nr=1000):
                 domain += tld
                 break
         domains = [*domains, domain]
-    return domains
+    return list(set(domains))
 
 # if __name__=="__main__":
 #     parser = argparse.ArgumentParser()

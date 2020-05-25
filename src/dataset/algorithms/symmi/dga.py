@@ -40,6 +40,7 @@ def dga(seed, second_and_top_lvl, nr):
         domains=[*domains,next_domain(r, second_and_top_lvl, third_lvl_len)]
     return domains
 
+
 def create_seed(date):
     return 10000*(date.day//days_period*100 + date.month) + date.year + seed_const
 

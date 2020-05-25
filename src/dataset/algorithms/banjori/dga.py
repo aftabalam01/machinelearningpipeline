@@ -31,6 +31,6 @@ class Banjori:
             for i in range(round(self.domaincount/3)):
                 domain = self._next_domain(domain=domain)
                 domains = [*domains, domain]
-        return domains
+        return list(set(domains))
 
 #print(banjori().generate_domain())

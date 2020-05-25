@@ -48,7 +48,7 @@ def dga(date, config_nr,count=24):
         domain += "." + config['tlds'][tld_index]
         #yield domain
         domains = [*domains,domain]
-    return domains
+    return list(set(domains))
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()

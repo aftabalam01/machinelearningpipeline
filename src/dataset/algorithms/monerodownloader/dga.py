@@ -34,7 +34,7 @@ def generate_domains(date, back=0,nr=500):
                 #yield domain
                 domains = [*domains,domain]
         ndays -= 1
-        return domains
+        return list(set(domains))
 
 
 # if __name__ == "__main__":

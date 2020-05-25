@@ -68,7 +68,7 @@ class Gozi:
     def generate_domain(self):
         for word in self.wordlist:
             self.dga(word)
-        return self.domains
+        return list(set(self.domains))
 
 
 # if __name__ == "__main__":
