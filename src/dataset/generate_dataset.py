@@ -479,7 +479,8 @@ def sisron(count=5000):
 def suppobox(count=5000):
     domains =[]
     for c in range(1,3,1):
-        time_ , d = Suppobox.set_arg()
+        date = datetime.now() - timedelta(days=c)
+        time_ = date.timestamp()
         domains+=Suppobox.generate_domains(time_ ,c,round(count/3))
         domains = list(set(domains))
     df = pd.DataFrame(data=domains, columns=['domainName'])
