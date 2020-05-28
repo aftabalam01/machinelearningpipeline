@@ -8,8 +8,8 @@ import numpy as np
 import os
 import tensorflow as tf
 
-max_features = 20000
-maxlen = 400
+MAX_FEATURES = 20000
+MAXLEN = 400
 embedding_dims = 300
 filters = 256
 kernel_size = 3
@@ -23,6 +23,8 @@ def parse_args():
     parser.add_argument('--epochs', type=int, default=1)
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--learning_rate', type=float, default=0.01)
+    parser.add_argument('--maxlen', type=int, default=MAXLEN)
+    parser.add_argument('--max_features', type=int, default=MAX_FEATURES)
 
     # data directories
     parser.add_argument('--train', type=str, default=os.environ.get('SM_CHANNEL_TRAIN'))
@@ -64,7 +66,7 @@ def get_test_data(test_dir):
     return x_test, y_test
 
 
-def get_model(learning_rate):
+def get_model(learning_rate,max_features=MAX_FEATURES,maxlen=MAXLEN):
     mirrored_strategy = tf.distribute.MirroredStrategy()
 
     with mirrored_strategy.scope():
@@ -97,7 +99,7 @@ if __name__ == "__main__":
     x_train, y_train = get_train_data(args.train)
     x_test, y_test = get_test_data(args.test)
 
-    model = get_model(args.learning_rate)
+    model = get_model(learning_rate=args.learning_rate,max_features=args.max_features,maxlen=args.maxlen)
 
     history = model.fit(x_train, y_train,
                         batch_size=args.batch_size,
