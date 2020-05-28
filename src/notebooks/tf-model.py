@@ -49,8 +49,8 @@ def save_history(path, history):
 
 
 def get_train_data(train_dir):
-    x_train = np.load(os.path.join(train_dir, 'x_train.npy'))
-    y_train = np.load(os.path.join(train_dir, 'y_train.npy'))
+    x_train = np.load(os.path.join(train_dir, 'x_train.npy'),allow_pickle=True)
+    y_train = np.load(os.path.join(train_dir, 'y_train.npy'),allow_pickle=True)
     print('x train', x_train.shape, 'y train', y_train.shape)
 
     return x_train, y_train
