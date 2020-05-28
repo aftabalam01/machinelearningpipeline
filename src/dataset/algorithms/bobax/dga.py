@@ -52,7 +52,7 @@ def get_domains(nr, date=datetime.now(), seed=random.choice(['a','b']), tld_set=
     for i in range(nr):
         for temp_file in range(2):
             domains.append(dga(i*2, date, seed, temp_file, tld_set))
-    return list(set(domains))
+    return domains
 
 
 if __name__=="__main__":

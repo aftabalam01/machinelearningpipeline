@@ -37,7 +37,7 @@ def get_domains(nr=10000):
         date = datetime.now() - timedelta(days=num_days,hours=hours,minutes=minutes,seconds=seconds)
         epoch_time = int(date.timestamp())
         domain_list += vidro(epoch_time, 100)
-    return list(set(domain_list))
+    return domain_list
 
 
 if __name__=='__main__':

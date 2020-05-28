@@ -32,7 +32,7 @@ class Dircypt:
     def generate_domain(self):
         for domain in self.get_domains(self.seed, self.domaincount):
             self.domains = [*self.domains,domain]
-        return list(set(self.domains))
+        return self.domains
 
 
 # if __name__=="__main__":

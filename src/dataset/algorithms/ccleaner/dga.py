@@ -25,5 +25,5 @@ def get_domains(nr, tlds=[".com"]):
 
         domain = sld + '.' + tlds[0]
         domains = [*domains,domain]
-    return list(set(domains))
+    return domains
 

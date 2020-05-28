@@ -64,4 +64,4 @@ def generate_domains(count=10000):
     for config in dga_configurations:
         for result in dga(*config):
             domains=[*domains,result]
-    return list(set(domains))
+    return domains

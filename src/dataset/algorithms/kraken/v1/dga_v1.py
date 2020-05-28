@@ -44,7 +44,7 @@ def get_domains(nr, seed_set):
     for i in range(nr):
         for temp_file in range(2):
             domains.append(dga(i*2, seed_set, temp_file))
-    return list(set(domains))
+    return domains
 
 # if __name__=="__main__":
 #     parser = argparse.ArgumentParser()

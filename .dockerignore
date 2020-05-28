@@ -1,4 +1,6 @@
 # never send the node modules to docker build context
-**/node_modules
 # don't send local database to build context
-**/mydatabase
+*/*/mydatabase
+*/*/dataset*
+*/venv*
+*/deploy*

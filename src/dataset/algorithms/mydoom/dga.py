@@ -43,7 +43,7 @@ def dga(date, magic, number):
         domain += tld
         #yield domain
         domains = [*domains ,domain]
-    return list(set(domains))
+    return domains
 
 # if __name__=="__main__":
 #     parser = argparse.ArgumentParser(description="DGA of MyDoom")

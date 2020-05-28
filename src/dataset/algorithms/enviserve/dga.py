@@ -28,7 +28,7 @@ def get_domains(count=1000):
     domains= []
     for i in range(0,len(word_list)):
         domains = [*domains,enviserv(i)]
-    return list(set(domains))
+    return domains
 
 
 if __name__=='__main__':

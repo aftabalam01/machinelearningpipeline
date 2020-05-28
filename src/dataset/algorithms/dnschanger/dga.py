@@ -32,7 +32,7 @@ class DnsChanger:
     def generate_domain(self):
         for _ in range(self.domaincount):
             self.domains = [*self.domains,self.dga(self.r)]
-        return list(set(self.domains))
+        return self.domains
 
 
 # if __name__=="__main__":

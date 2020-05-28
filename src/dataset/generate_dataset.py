@@ -7,6 +7,7 @@ import json
 import pandas as pd
 from joblib import Parallel, delayed
 from datetime import datetime,timedelta
+from algorithms.bamital import dga as Bamital
 from algorithms.banjori.dga import Banjori
 from algorithms.chinad.dga import Chinad
 from algorithms.corebot.dga import Corebot
@@ -103,86 +104,93 @@ SEEDS= ["16647BB4",
             "89547381",
             "6C36D41D"]
 
+
+def bamital(count=10000):
+    domains = Bamital.get_domains(count=count)
+    df = pd.DataFrame(data=domains, columns=['domainName'])
+    df['dgafaimly'] = 'bamital'
+    write_file(df, 'bamital.csv')
+
 def ccleaner(count=10000):
     d= Ccleaner.get_domains(nr=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'ccleaner'
-    write_file(df)
+    write_file(df,'ccleaner.csv')
 
 def bobax(count=10000):
     d= Cryptolocker.get_domains(count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'bobax'
-    write_file(df)
+    write_file(df,'bobax.csv')
 
 def cryptolocker(count=10000):
     d= Cryptolocker.get_domains(count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'cryptolocker'
-    write_file(df)
+    write_file(df,'cryptolocker.csv')
 
 def tofsee(count=10000):
     d= Tofsee.get_domains(count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'tofsee'
-    write_file(df)
+    write_file(df,'tofsee.csv')
 
 def torpig(count=10000):
     d= Torpig.get_domains(count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'torpig'
-    write_file(df)
+    write_file(df,'torpig.csv')
 
 def enviserve(count=10000):
     d= Enviserve.get_domains(count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'enviserve'
-    write_file(df)
+    write_file(df,'enviserve.csv')
 
 def vidro(count=10000):
     d= Vidro.get_domains(nr=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'vidro'
-    write_file(df)
+    write_file(df,'vidro.csv')
 
 def dyre(count=10000):
     d= Dyre.get_domains(count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'dyre'
-    write_file(df)
+    write_file(df,'dyre.csv')
 
 def rovnix(count=100000):
     d = Rovnix.generate_domains(count=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'rovnix'
-    write_file(df)
+    write_file(df,'rovnix.csv')
 
 
 def matsnu(count=10000):
     d = Matsnu.generate_domains(count=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'matsnu'
-    write_file(df)
+    write_file(df,'matsnu.csv')
 
 
 def gameover(count=10000):
     d = GameoverZeus.engine(maxiter=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'gameoverzeus'
-    write_file(df)
+    write_file(df,'gameover.csv')
 
 
 def banjori(count=100):
     b = Banjori(count)
     df=pd.DataFrame(data=b.generate_domain(),columns=['domainName'])
     df['dgafaimly'] = 'banjori'
-    write_file(df)
+    write_file(df,'banjori.csv')
 
 
 def chinad(count=100):
     df=pd.DataFrame(data=Chinad(count=count).generate_domain(),columns=['domainName'])
     df['dgafaimly'] = 'chinad'
-    write_file(df)
+    write_file(df,'chinad.csv')
 
 
 def corebot(count=None):
@@ -190,7 +198,7 @@ def corebot(count=None):
     c.generate_domain()
     df = pd.DataFrame(data=c.domains, columns=['domainName'])
     df['dgafaimly'] = 'corebot'
-    write_file(df)
+    write_file(df,'corebot.csv')
 
 
 def dircrypt(count=100,seed=SEEDS):
@@ -199,14 +207,14 @@ def dircrypt(count=100,seed=SEEDS):
         d = Dircypt(seed=s,count=count)
         df = pd.DataFrame(data=d.generate_domain(), columns=['domainName'])
         df['dgafaimly'] = 'dircypt'
-        write_file(df)
+        write_file(df,'dircrypt.csv')
 
 
 def dnschanger(count,seed=112435):
     d=DnsChanger(seed,count)
     df = pd.DataFrame(data=d.generate_domain(), columns=['domainName'])
     df['dgafaimly'] = 'dnscharger'
-    write_file(df)
+    write_file(df,'dnschanger.csv')
 
 
 def fobber(version=2,count=500):
@@ -214,14 +222,14 @@ def fobber(version=2,count=500):
     f.dga()
     df = pd.DataFrame(data=f.domains, columns=['domainName'])
     df['dgafaimly'] = 'fobber'
-    write_file(df)
+    write_file(df,'fobber.csv')
 
 
 def gozi(count=500):
     g = Gozi(count=count)
     df = pd.DataFrame(data=g.generate_domain(), columns=['domainName'])
     df['dgafaimly'] = 'gozi'
-    write_file(df)
+    write_file(df,'gozi.csv')
 
 
 def kraken(count=100):
@@ -231,7 +239,7 @@ def kraken(count=100):
               KrakenV2.get_domains(nr=round(count / 4), seed='b',tld_set=2)
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'kraken'
-    write_file(df)
+    write_file(df,'kraken.csv')
 
 
 def locky(count=500):
@@ -242,35 +250,36 @@ def locky(count=500):
         domains = domains+[domain1,domain2]
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'locky'
-    write_file(df)
+    write_file(df,'locky.csv')
 
 
 def monero(date=datetime.now(),count=500):
     for counter in range(round(count/2500)):
 
         domains= moneroD.generate_domains(date,count)
-        domains = list(set(domains))
+
         df = pd.DataFrame(data=domains, columns=['domainName'])
         df['dgafaimly'] = 'monero'
-        write_file(df)
+        write_file(df,'monero.csv')
         date = date - timedelta(days=1)
 
 
 def murofet(count=500):
     domains = murofetv1.dga(date=datetime.now(),nr=round(count / 2)) + \
         murofetv2.dga(date=datetime.now(),key=int("0x12F",16),nr=round(count / 2))
-    domains = list(set(domains))
+
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'murofet'
-    write_file(df)
+    write_file(df,'murofet.csv')
 
 
 def mydoom(count=500):
     domains = Mydoom.dga(date=datetime.now(),magic=int("0x12F",16),number=count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'mydoom'
-    write_file(df)
+    write_file(df,'mydoom.csv')
 
 
 def necurs(count=500):
@@ -278,10 +287,10 @@ def necurs(count=500):
     for i in range(round(count / 2)):
         domain = Necurs.generate_necurs_domain(i,18,date=datetime.now())
         domains = [*domains, domain]
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'necurs'
-    write_file(df)
+    write_file(df,'necurs.csv')
 
 
 def newgoz(count=500):
@@ -289,19 +298,19 @@ def newgoz(count=500):
     for i in range(round(count / 2)):
         domain = Newgoz.create_domain(i,date=datetime.now())
         domains = [*domains, domain]
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'newgoz'
-    write_file(df)
+    write_file(df,'newgoz.csv')
 
 
 def nymaim(count=500):
     domains = nymaimV1.dga(date=datetime.now(),nr=count) +\
               nymaimV2.dga(date=datetime.now())
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'nymaim'
-    write_file(df)
+    write_file(df,'nymaim.csv')
 
 
 def padcrypt(count=500):
@@ -309,10 +318,10 @@ def padcrypt(count=500):
     domains= Padcrypt.dga(date=datetime.now(),
                                     config_nr=random.choice(["2.2.86.1", "2.2.97.0"]),
                                     count = round(count/2))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'padcrypt'
-    write_file(df)
+    write_file(df,'padcrypt.csv')
 
 
 def pitou(count=500):
@@ -321,35 +330,35 @@ def pitou(count=500):
     domains=[]
     for c in range(count):
         domains = [*domains,Pitou.dga(d.year, seed, c, int("0x12F", 16))]
-    #domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'pitou'
-    write_file(df)
+    write_file(df,'pitou.csv')
 
 
 def pizd(count=500,date=None):
     d = datetime.strptime(date, "%Y-%m-%d") if date else datetime.now()
     d -= datetime.utcfromtimestamp(0)
     domains = Pizd.pizd(int(d.total_seconds() * 1000), count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'pizd'
-    write_file(df)
+    write_file(df,'pizd.csv')
 
 
 def proslikefan(count=500):
     domains=proslikeFan.dga(date=datetime.now()-timedelta(days=2), magic='mylovehatechoice',nr=round(count/10)) # account from 10 tlds
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'proslikefan'
-    write_file(df)
+    write_file(df,'proslikefan.csv')
 
 
 def pushdo2(count=100000):
     d = Pushdo2.initDGA(salt=0,count=count)
     df = pd.DataFrame(data=d, columns=['domainName'])
     df['dgafaimly'] = 'pushdo'
-    write_file(df)
+    write_file(df,'pushdo2.csv')
 
 
 def pushdo(count=None):
@@ -361,7 +370,7 @@ def pushdo(count=None):
         domains = list(set(domains))
         df = pd.DataFrame(data=domains, columns=['domainName'])
         df['dgafaimly'] = 'pushdo'
-        write_file(df)
+        write_file(df,'pushdo.csv')
         d = d-timedelta(days=1)
 
 
@@ -370,10 +379,10 @@ def pykspa(count=5000):
     domains= pykspa_im.generate_domains(datetime.now()-timedelta(days=300),round(count/10),1) + \
         pykspa_im.generate_domains(datetime.now()-timedelta(days=300), round(count / 2.5), 2)+\
         pykspa_pre.generate_domains(datetime.now()-timedelta(days=300), round(count / 2))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'pykspa'
-    write_file(df)
+    write_file(df,'pykspa.csv')
 
 def qadars(count=500):
     domains=[]
@@ -384,36 +393,36 @@ def qadars(count=500):
             domains = list(set(domains))
             df = pd.DataFrame(data=domains, columns=['domainName'])
             df['dgafaimly'] = 'qadars'
-        write_file(df)
+        write_file(df,'qadars.csv')
         d = d - timedelta(days=1)
 
 
 def qakbot(count=5000):
     d, tlds, nr, sandbox, seed = Qakbot.set_arg()
     domains= Qakbot.dga(d, tlds, count, sandbox, seed)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'qakbot'
-    write_file(df)
+    write_file(df,'qakbot.csv')
 
 
 def qsnatch(count=None):
     d = datetime.now()
     for counter in range(round(count / 2500)):
         domains= qsnatchA.dga(date=d)+qsnatchB.dga(date=datetime.now()-timedelta(days=10))
-        domains = list(set(domains))
+
         df = pd.DataFrame(data=domains, columns=['domainName'])
         df['dgafaimly'] = 'qsnatch'
-        write_file(df)
+        write_file(df,'qsnatch.csv')
         d = d - timedelta(days=1)
 
 
 def ramdo(count=5000):
     domains= Ramdo(count=count).generate_dga()
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'ramdo'
-    write_file(df)
+    write_file(df,'ramdo.csv')
 
 
 def ramnit(count=1000):
@@ -421,10 +430,10 @@ def ramnit(count=1000):
     domains =[]
     for seed in seeds:
         domains += Ramnit.get_domains(seed=int(seed,16), nr=round(count/10))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'ramnit'
-    write_file(df)
+    write_file(df,'ramnit.csv')
 
 
 def ranbyus(count=None):
@@ -434,46 +443,47 @@ def ranbyus(count=None):
     for counter in range(round(count / 2500)):
         for seed in seeds:
             domains += Ranbyus.dga(d.year, d.month, d.day, seed=int(seed, 16))
-        domains = list(set(domains))
+
         df = pd.DataFrame(data=domains, columns=['domainName'])
         df['dgafaimly'] = 'ranbyus'
-        write_file(df)
+        write_file(df,'ranbyus.csv')
         d = d - timedelta(days=1)
 
 
 def reconyc(count=5000):
     domains= Reconyc.generate_domains(nr=count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'reconyc'
-    write_file(df)
+    write_file(df,'reconyc.csv')
 
 
 def shiotob(count=5000):
     domains= Shiotob.generate_domains(count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'shiotob'
-    write_file(df)
+    write_file(df,'shiotob.csv')
 
 
 def simda(count=5000):
     domains= Simda.generate_domains(count=count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'simda'
-    write_file(df)
+    write_file(df,'simda.csv')
 
 
 def sisron(count=5000):
     d = datetime.now()
+    domains=[]
     for counter in range(round(count / 40)):
-        domains= Sisron.generate_domains(d, 100)
-        domains = list(set(domains))
-        df = pd.DataFrame(data=domains, columns=['domainName'])
-        df['dgafaimly'] = 'sisron'
-        write_file(df)
+        domains += Sisron.generate_domains(d, 100)
         d = d - timedelta(days=1)
+    df = pd.DataFrame(data=domains, columns=['domainName'])
+   # print(df.head())
+    df['dgafaimly'] = 'sisron'
+    write_file(df,'sisron.csv')
 
 
 def suppobox(count=5000):
@@ -482,64 +492,63 @@ def suppobox(count=5000):
         date = datetime.now() - timedelta(days=c)
         time_ = date.timestamp()
         domains+=Suppobox.generate_domains(time_ ,c,round(count/3))
-        domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'suppobox'
-    write_file(df)
+    write_file(df,'suppobox.csv')
 
 def symmi(count=5000):
     seed = Symmi.create_seed(datetime.now()-timedelta(20))
     domains= Symmi.dga(seed, ".net", count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'symmi'
-    write_file(df)
+    write_file(df,'symmi.csv')
 
 
 def tempedreve(count=None):
-    d = datetime.now()
+    domains=[]
     for counter in range(round(count / 1800)):
         d = datetime.now() - timedelta(days=round(count / 1800))
-        domains= TempeDreve.dga(d)
-        domains = list(set(domains))
-        df = pd.DataFrame(data=domains, columns=['domainName'])
-        df['dgafaimly'] = 'tempedreve'
-        write_file(df)
-        d = d - timedelta(days=1)
+        domains += TempeDreve.dga(d)
+
+    df = pd.DataFrame(data=domains, columns=['domainName'])
+    df['dgafaimly'] = 'tempedreve'
+    write_file(df,'tempedreve.csv')
 
 
 def tinba(count=None):
-    domains= Tinba.generate_domains()
-    domains = list(set(domains))
+    domains= Tinba.generate_domains(count=count)
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'tinba'
-    write_file(df)
+    write_file(df,'tinba.csv')
 
 
 def tinba2(count=100000):
     domains= Tinba2.tinbaDGA(idomain='mywonderfullworld.com',seed='oGkS3w3sGGOGG7oc',count=count)
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'tinba'
-    write_file(df)
+    write_file(df,'tinba2.csv')
 
 
 def unmalware(count=1000):
     domains=[]
     for p in ["sn", "al"]:
         domains=domains+un_malware.dga(p,round(count/12))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'unmalware'
-    write_file(df)
+    write_file(df,'unmalware.csv')
 
 
 def unjs(count=1000):
     domains = un_js.dga(seed="hello", d=datetime.now(),nr=round(count/3))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'unjavascript'
-    write_file(df)
+    write_file(df,'unjs.csv')
 
 
 def zloader(count=1000):
@@ -548,30 +557,32 @@ def zloader(count=1000):
         seed = Zloader.seeding(d=datetime.now()-timedelta(days=2),
                            key=key)
         domains += Zloader.dga(seed, round(count/2))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'zloader'
-    write_file(df)
+    write_file(df,'zloader.csv')
 
 
 def vawtrak(count=100):
     domains = VawTrak1.generate_domains(count=round(count/10)) + \
             VawTrak2.generate_domains(count=round(count/10)) +\
             VawTrak3.generate_domains(count=round(count/10))
-    domains = list(set(domains))
+
     df = pd.DataFrame(data=domains, columns=['domainName'])
     df['dgafaimly'] = 'vawtrak'
-    write_file(df)
+    write_file(df,"vawtrak.csv")
 
 
-def write_file(df):
-    df.to_csv(DATA_FILE, compression="gzip", mode='a', header=False,index=False)
+def write_file(df,filename):
+    df.drop_duplicates(subset=['domainName'],keep='first', inplace=True)
+    df.to_csv(f"./temp/{filename}", mode='w', header=False,index=False)
 
 
 def generate_data(config_file=None):
 
     if not config_file:
         config = {
+            "bamital":10,
             "ccleaner":10,
             "bobax":10,
             "cryptolocker":10,
@@ -621,7 +632,6 @@ def generate_data(config_file=None):
             "tinba": 186,
             "tinba2": 186,
             "un_malware": 45,
-            "un_downloader": 47,
             "un_js": 80,
             "vawtrak": 118,
             "zloader": 118,
@@ -681,27 +691,23 @@ def generate_data(config_file=None):
        "vidro": vidro,
        "dyre": dyre,
         "ccleaner": ccleaner,
-        "bobax": bobax
+        "bobax": bobax,
+        "bamital": bamital
         }
 
     def execute(key, count=10):
         print(f"{datetime.now()}: Running function {key} for count {count}")
+        ts = datetime.now().timestamp()
         func = function_map[key]
         func(count=count)
-        print(f"{datetime.now()}:Running function {key} for count {count} complete")
+        te = datetime.now().timestamp()
+        print(f"{datetime.now()}: Running function {key} for count {count} completed in {te-ts} seconds")
 
     Parallel(n_jobs=4)(delayed(execute)(key=key, count=config[key]) for key in config.keys())
 
 
 if __name__ == "__main__":
-    DATA_FILE = "{}/processingdata.csv.gz".format(os.getenv('datadir',"."))
     DATA_CONFIG = "{}/config1.json".format(os.getenv('configdir',"config"))
-    try:
-        print("overriding data file")
-        print(DATA_FILE)
-        os.remove(DATA_FILE)
-    except OSError:
-        pass
     generate_data(config_file=DATA_CONFIG)
 
 

@@ -1,0 +1,16 @@
+FROM tensorflow/tensorflow AS base
+
+RUN apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get clean
+RUN mkdir /code
+COPY requirements.txt requirements.txt
+RUN pip --no-cache-dir install -r requirements.txt
+
+FROM base AS model
+COPY . /model
+RUN chmod 777 /model/start_server.sh
+WORKDIR /model
+EXPOSE 8000
+
+

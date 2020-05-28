@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import numpy as np
+import glob
 
 
 def summary(df):
@@ -14,11 +16,20 @@ def summary(df):
 
 
 if __name__=='__main__':
-    INPUT_FILE= "{}/processingdata.csv.gz".format(os.getenv('datadir',"."))
     OUTPUT_FILE = "{}/output/output.csv.gz".format(os.getenv('outputdir', "."))
     try:
         os.remove(OUTPUT_FILE)
     except OSError:
         pass
-    df = pd.read_csv(INPUT_FILE)
+    file_list = glob.glob("./temp/*.csv")
+    df = pd.DataFrame(data=np.empty((0,2)),columns=['domainName','family'])
+    for file in file_list:
+        try:
+            df_temp = pd.read_csv(file)
+            df_temp.columns = ['domainName', 'family']
+            df= pd.concat([df,df_temp])
+        except Exception as e:
+            print(file)
+            print(e)
+            continue
     summary(df)

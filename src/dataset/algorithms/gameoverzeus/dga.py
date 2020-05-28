@@ -8,7 +8,7 @@ import logging
 
 family = "GameoverZeus"
 utility = family + "-DGA"
-os.system("title " + utility)
+#os.system("title " + utility)
 
 
 def hasher(data, algorithm="md5"):
@@ -140,7 +140,7 @@ def engine(salt=0x35190501, maxiter=100000):
             domain += ".\x6F\x72\x67"
 
         domains.append(domain)
-    return list(set(domains))
+    return domains
 
 
 # index = 0

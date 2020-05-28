@@ -27,7 +27,7 @@ def get_domains(nr=10000):
     for i in range(nr):
         date= datetime.now() - timedelta(days=i)
         domains = [*domains,torpig(date)]
-    return list(set(domains))
+    return domains
 
 
 if __name__=='__main__':

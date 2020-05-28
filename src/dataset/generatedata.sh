@@ -16,6 +16,6 @@ fi
 
 if [ ${s3bucket} ]
     then
-    echo "coping output to s3 bucket ${s3bucket}"
+    echo "copying output to s3 bucket ${s3bucket}"
     aws s3 cp ${outputdir}/output.csv.gz ${s3bucket}/dgadataset/ --quiet
 fi

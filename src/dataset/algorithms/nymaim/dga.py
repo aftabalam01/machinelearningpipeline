@@ -55,7 +55,7 @@ def dga(date, nr):
 
         #print(domain)
         domains=[*domains,domain]
-    return list(set(domains))
+    return domains
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()

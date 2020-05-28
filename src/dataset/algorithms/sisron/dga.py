@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 import base64 
 import argparse 
 import random
+
+
 def dga(d, day_index, tld_index):
     tlds = [".com", ".org", ".net", ".info"]
     d -= timedelta(days=day_index)

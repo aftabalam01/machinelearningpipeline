@@ -33,7 +33,7 @@ def cryptolocker(date):
 
         domain = n + "." + tlds[z % 7]
         domains.append(domain)
-    return list(set(domains)) # only return unique
+    return domains # only return unique
 
 
 def get_domains(nr=10000):
@@ -41,7 +41,7 @@ def get_domains(nr=10000):
     for i in range(int(nr/1000)):
         date= datetime.now() - timedelta(days=i)
         domains +=cryptolocker(date)
-    return list(set(domains))
+    return domains
 
 if __name__ == '__main__':
 

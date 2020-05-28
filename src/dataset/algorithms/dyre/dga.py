@@ -26,7 +26,7 @@ def get_domains(nr=10000):
         date = datetime.now() - timedelta(days=num_days)
         date_str = date.strftime("%Y-%M-%d")
         domain_list= [*domain_list, dyre_dga(num,date_str)]
-    return list(set(domain_list))
+    return domain_list
 
 if __name__=='__main__':
     print(len(get_domains()))

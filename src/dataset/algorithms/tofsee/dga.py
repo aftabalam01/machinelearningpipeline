@@ -20,7 +20,7 @@ def get_domain(date):
     domains = []
     for domain in tofsee(seed):
         domains = [*domains,domain]
-    return list(set(domains))
+    return domains
 
 def get_domains(count=1000):
     domains = []
@@ -30,7 +30,7 @@ def get_domains(count=1000):
         seconds = random.randint(0, 60)
         date = datetime.now() - timedelta(days=i, hours=hours, minutes=minutes, seconds=seconds)
         domains += get_domain(date)
-    return list(set(domains))
+    return domains
 
 if __name__ == '__main__':
 

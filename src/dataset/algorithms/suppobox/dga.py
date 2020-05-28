@@ -48,7 +48,7 @@ def generate_domains(time_, word_list,nr=100):
         domain= f"{first_word}{second_word}{tld}"
         seed += 1
         domains = [*domains,domain]
-    return list(set(domains))
+    return domains
 
 
 def set_arg():

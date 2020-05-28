@@ -58,7 +58,7 @@ class Chinad:
             for domain in self._dga(self.generate_date):
                 self.domains = [*self.domains, domain]
             self.generate_date = self.generate_date - timedelta(days=1)
-        return list(set(self.domains))
+        return self.domains
 
 # if __name__ == "__main__":
 #     parser = argparse.ArgumentParser(description="gozi dga")
