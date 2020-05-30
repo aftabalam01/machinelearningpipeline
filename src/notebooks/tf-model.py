@@ -74,9 +74,10 @@ def get_model(learning_rate,max_features=MAX_FEATURES,maxlen=MAXLEN):
                                                     embedding_dims,
                                                     input_length=maxlen)
 
-        sequence_input = tf.keras.Input(shape=(maxlen,), dtype='int32')
+        sequence_input = tf.keras.Input(shape=(maxlen,), dtype='float')
         embedded_sequences = embedding_layer(sequence_input)
         x = tf.keras.layers.Dropout(0.2)(embedded_sequences)
+        x = tf.keras.layers.LSTM(128)(x)
         x = tf.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu', strides=1)(x)
         x = tf.keras.layers.MaxPooling1D()(x)
         x = tf.keras.layers.GlobalMaxPooling1D()(x)
