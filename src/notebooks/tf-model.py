@@ -7,6 +7,12 @@ import json
 import numpy as np
 import os
 import tensorflow as tf
+from keras.preprocessing import sequence
+from keras.models import Sequential
+from keras.layers.core import Dense, Dropout, Activation
+from keras.layers.embeddings import Embedding
+from keras.layers.recurrent import LSTM
+from keras.layers.core import Dense
 
 MAX_FEATURES = 20000
 MAXLEN = 400
@@ -67,29 +73,36 @@ def get_test_data(test_dir):
 
 
 def get_model(learning_rate,max_features=MAX_FEATURES,maxlen=MAXLEN):
-    mirrored_strategy = tf.distribute.MirroredStrategy()
-
-    with mirrored_strategy.scope():
-        embedding_layer = tf.keras.layers.Embedding(max_features,
-                                                    embedding_dims,
-                                                    input_length=maxlen)
-
-        sequence_input = tf.keras.Input(shape=(maxlen,), dtype='float')
-        embedded_sequences = embedding_layer(sequence_input)
-        x = tf.keras.layers.Dropout(0.2)(embedded_sequences)
-        x = tf.keras.layers.LSTM(128)(x)
-        x = tf.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu', strides=1)(x)
-        x = tf.keras.layers.MaxPooling1D()(x)
-        x = tf.keras.layers.GlobalMaxPooling1D()(x)
-        x = tf.keras.layers.Dense(hidden_dims, activation='relu')(x)
-        x = tf.keras.layers.Dropout(0.2)(x)
-        preds = tf.keras.layers.Dense(1, activation='sigmoid')(x)
-
-        model = tf.keras.Model(sequence_input, preds)
-        optimizer = tf.keras.optimizers.Adam(learning_rate)
-        model.compile(loss='binary_crossentropy',
-                      optimizer=optimizer,
-                      metrics=['accuracy'])
+    model = Sequential()
+    model.add(Embedding(max_features, 128, input_length=maxlen))
+    model.add(LSTM(128))
+    model.add(Dropout(0.5))
+    model.add(Dense(1))
+    model.add(Activation('sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer='rmsprop')
+    # mirrored_strategy = tf.distribute.MirroredStrategy()
+    #
+    # with mirrored_strategy.scope():
+    #     embedding_layer = tf.keras.layers.Embedding(max_features,
+    #                                                 embedding_dims,
+    #                                                 input_length=maxlen)
+    #
+    #     sequence_input = tf.keras.Input(shape=(maxlen,), dtype='float')
+    #     embedded_sequences = embedding_layer(sequence_input)
+    #     x = tf.keras.layers.Dropout(0.2)(embedded_sequences)
+    #     x = tf.keras.layers.LSTM(128)(x)
+    #     #x = tf.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu', strides=1)(x)
+    #     x = tf.keras.layers.MaxPooling1D()(x)
+    #     x = tf.keras.layers.GlobalMaxPooling1D()(x)
+    #     x = tf.keras.layers.Dense(hidden_dims, activation='relu')(x)
+    #     x = tf.keras.layers.Dropout(0.2)(x)
+    #     preds = tf.keras.layers.Dense(1, activation='sigmoid')(x)
+    #
+    #     model = tf.keras.Model(sequence_input, preds)
+    #     optimizer = tf.keras.optimizers.Adam(learning_rate)
+    #     model.compile(loss='binary_crossentropy',
+    #                   optimizer=optimizer,
+    #                   metrics=['accuracy'])
 
     return model
 
