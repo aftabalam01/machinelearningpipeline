@@ -23,7 +23,13 @@ def input_handler(data, context):
         instance = [{"b64": encoded_image}]
         return json.dumps({"instances": instance})
     elif context.request_content_type == 'application/json':
-        return data.read().decode('utf-8')
+        # pass through json (assumes it's correctly formed)
+        d = data.read().decode('utf-8')
+        return d if len(d) else ''
+    elif context.request_content_type == 'text/csv':
+        return json.dumps({
+            'instances': [float(x) for x in data.read().decode('utf-8').split(',')]
+        })
     else:
         _return_error(415, 'Unsupported content type "{}"'.format(context.request_content_type or 'Unknown'))
 

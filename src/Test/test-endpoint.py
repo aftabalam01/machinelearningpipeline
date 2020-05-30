@@ -18,7 +18,7 @@ if __name__ == '__main__':
         args = parse_arg()
 
         HEADER = 'x-api-key'
-        fqdn_endpoint = args['baseurl'] + '/predict2'
+        fqdn_endpoint = args['baseurl'] + '/predict'
         fqdn_api_key = args['apikey']
         right = float(0)
         wrong = float(0)
