@@ -1,4 +1,5 @@
-# machinelearningpipeline
+# Building Machine learning model as API 
+
 This repo has sample code to create an API to predict if a domian is DGA or not using AWS sagemaker and apigateway. It also have terraform script for deployment.
 
 ## Data Setup 
