@@ -15,10 +15,12 @@ https://github.com/aftabalam01/machinelearningpipeline/tree/master/src/dataset
 https://github.com/aftabalam01/machinelearningpipeline/blob/master/src/notebooks/Benign_dataSetup_explore.ipynb
 
 ## Build and train model
-https://github.com/aftabalam01/machinelearningpipeline/blob/master/src/notebooks/Build-deploy-dga-xgboost_exp5.ipynb
-*Sample code with tensorflow and using sagemaker script mode
-https://github.com/aftabalam01/machinelearningpipeline/blob/master/src/notebooks/Build%20Tensorflow%20LSTM%20model-sagemaker.ipynb
-*model script
+https://github.com/aftabalam01/machinelearningpipeline/blob/master/src/notebooks/Build-deploy-dga-xgboost_exp5.ipynb  
+
+**Sample code with tensorflow and using sagemaker script mode**
+https://github.com/aftabalam01/machinelearningpipeline/blob/master/src/notebooks/Build%20Tensorflow%20LSTM%20model-sagemaker.ipynb  
+
+**model script**
 https://github.com/aftabalam01/machinelearningpipeline/blob/master/src/notebooks/tf-model.py
 
 ### Lambda functions to integration between apigateway and model endpoint
