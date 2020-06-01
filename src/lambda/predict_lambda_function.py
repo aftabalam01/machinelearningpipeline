@@ -53,7 +53,6 @@ def features(domain):
     else:
         # print(domain)
         pass
-
     rvalue = pad(rvalue, '0', 63)
     return ','.join(rvalue)
 
