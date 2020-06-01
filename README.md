@@ -5,7 +5,9 @@ This repo has sample code to create an API to predict if a domian is DGA or not 
 ### DGA generations code
 I have taken old code from these two repo and changed it to python 3 version
 https://github.com/andrewaeva/DGA/blob/master/dga_wordlists/main.py
-https://github.com/baderj/domain_generation_algorithms
+
+https://github.com/baderj/domain_generation_algorithms  
+
 New code and docker file to generate DGA are in:
 https://github.com/aftabalam01/machinelearningpipeline/tree/master/src/dataset
 ### NoteBook to clean up and create final data
